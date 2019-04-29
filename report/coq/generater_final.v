@@ -59,12 +59,14 @@ Inductive tm : Type :=
   | twhile : tm -> tm -> tm
   (* generator *)
   | gen : tm -> tm -> tm
-  | gyeild : tm -> tm
+  | gyield : tm -> tm
   | gnext : tm -> tm.
 
-Inductive yeild_tm : tm -> Prop :=
-  | ygyeild : forall t,
-      yeild_tm (gyeild t).
+Inductive yield_tm : tm -> Prop :=
+  | Tgyield : forall t, yield_tm (gyield t).
+
+Inductive seq_tm : tm -> Prop :=
+  | Tseq : forall t1 t2, seq_tm (seq t1 t2).
 
 (* ----------------------------------------------------------------- *)
 (** *** Substitution *)
@@ -105,7 +107,7 @@ Fixpoint subst (x:string) (s:tm) (t:tm) : tm :=
   | twhile t1 t2 => twhile (subst x s t1) (subst x s t2)
   (* generator *)
   | gen t1 t2 => gen (subst x s t1) (subst x s t2)
-  | gyeild t => gyeild (subst x s t)
+  | gyield t => gyield (subst x s t)
   | gnext t => gnext (subst x s t)
   end.
 
@@ -131,9 +133,9 @@ Inductive value : tm -> Prop :=
   (* reference *)
   | v_loc : forall l, value (loc l)
   (* generator *)
-  | v_gyeild : forall v,
+  | v_gyield : forall v,
       value v ->
-      value (gyeild v).
+      value (gyield v).
 
 (* ----------------------------------------------------------------- *)
 (** Reduction Help Functions and Definitions *)
@@ -153,13 +155,13 @@ Fixpoint replace {A:Type} (n:nat) (x:A) (l:list A) : list A :=
   end.
 
 (* sequence *)
-Definition tseq t1 t2 := 
+(* Definition tseq t1 t2 := 
   match t1 with 
-  | gyeild t1' => pair t1' (abs "_" Unit t2)
+  | gyield t1' => pair t1' (abs "_" Unit t2)
   | _ => app (abs "_" Unit t2) t1
   end.
-(* Notation "t1 ; t2" := (tseq t1 t2) (at level 80, right associativity). *)
-(* Compute gyeild (const 0) ; const 1 ; const 3. *)
+Notation "t1 ; t2" := (tseq t1 t2) (at level 80, right associativity).
+Compute gyield (const 0) ; const 1 ; const 3. *)
 
 Fixpoint seqCat (s : tm) (t : tm) : tm :=
   match s with
@@ -168,7 +170,7 @@ Fixpoint seqCat (s : tm) (t : tm) : tm :=
   end.
 (* Compute seqCat (seq (const 0) (const 1)) (const 2).
 Compute seqCat (seq (const 0) (seq (const 1) (const 2))) (const 3).
-Compute (gyeild (const 0)) = (const 1).
+Compute (gyield (const 0)) = (const 1).
 Compute not. Compute not True. Compute not False. *)
 
 
@@ -236,27 +238,25 @@ Inductive step : tm * store -> tm * store -> Prop :=
       value (pair v1 v2) ->
       snd (pair v1 v2) / st --> v2 / st
   (* sequences *)
-  | ST_Seq1 : forall t1 t1' t2 st st',
+  | ST_Seq1 : forall t1 t2 st,
+      seq_tm t1 ->
+      (seq t1 t2) / st --> seqCat t1 t2 / st
+  | ST_Seq2 : forall t1 t1' t2 st st',
+      not (seq_tm t1) ->
       t1 / st --> t1' / st' ->
-      (seq t1 t2) / st --> (seq t1' t2) / st'
-  | ST_Seq2 : forall v1 t2 t2' st st',
+      seq t1 t2 / st --> seqCat t1' t2 / st'
+  | ST_Seq3 : forall v1 t2 st,
       value v1 ->
-      t2 / st --> t2' / st' ->
-      seq v1 t2 / st --> seq v1 t2'/ st'
-  | ST_Seq3 : forall v1 v2 st,
+      yield_tm v1 ->
+      seq v1 t2 / st --> pair v1 (abs "_" Unit t2) / st
+  | ST_Seq4 : forall v1 t2 st,
       value v1 ->
-      value v2 ->
-      yeild_tm v1 ->
-      seq v1 v2 / st --> pair v1 (abs "_" Unit v2) / st
-  | ST_Seq4 : forall v1 v2 st,
-      value v1 ->
-      value v2 ->
-      not (yeild_tm v1) ->
-      seq v1 v2 / st --> app (abs "_" Unit v2) v1 / st
+      not (yield_tm v1) ->
+      seq v1 t2 / st --> t2 / st
   (* reference *)
-  | ST_RefValue : forall v1 st,
-      value v1 ->
-      ref v1 / st --> loc (length st) / (st ++ v1::nil)
+  | ST_RefValue : forall v st,
+      value v ->
+      ref v / st --> loc (length st) / (st ++ v::nil)
   | ST_Ref : forall t1 t1' st st',
       t1 / st --> t1' / st' ->
       ref t1 /  st --> ref t1' /  st'
@@ -298,17 +298,14 @@ Inductive step : tm * store -> tm * store -> Prop :=
       value v1 ->
       t2 / st --> t2' / st' ->
       twhile v1 t2 / st --> twhile v1 t2' / st'
-  | ST_While3 : forall x1 T p x2 b b' st st',
-      b / st --> b' / st' ->
-      twhile (abs x1 (Ref T) p) (abs x2 (Ref T) b) / st
-      --> twhile (abs x1 (Ref T) p) (abs x2 (Ref T) b') / st'
   | ST_WhileFix : forall x1 T p x2 b f x st,
-      twhile (abs x1 (Ref T) p) (abs x2 (Ref T) (abs "_" Unit b)) / st
-      --> tfix (abs f (Arrow (Ref T) (Ref T))
-                      (abs x (Ref T)
-                           (test (app (abs x1 (Ref T) p) (var x))
-                                 (app (seqCat b (app (var f) (var x))) (var x))
-                                 (var x)))) / st
+      twhile (abs x1 (Ref T) p) (abs x2 (Ref T) b) / st
+      --> tfix (abs f (Arrow (Ref T) Unit)
+               (abs x (Ref T)
+               (test (app (abs x1 (Ref T) p) (var x))
+                     (seq (app (abs x2 (Ref T) b) (var x))
+                          (app (var f) (var x)))
+                     unit))) / st
   (* generator*)
   | ST_Gen1 : forall t1 t1' t2 st st',
       t1 / st --> t1' / st' ->
@@ -317,13 +314,13 @@ Inductive step : tm * store -> tm * store -> Prop :=
       value v1 ->
       t2 / st --> t2' / st' ->
       gen v1 t2 / st --> gen v1 t2' / st'
-  | ST_Gen3 : forall x T b v st,
+  | ST_Gen3 : forall x T g v st,
       value v ->
-      gen (abs x T b) v / st --> ref (app (abs x T b) v) / st
-  (* generator - yeild *)
-  | ST_Gyeild : forall t t' st st',
+      gen (abs x T g) v / st --> [x:=v]g / st
+  (* generator - yield *)
+  | ST_Gyield : forall t t' st st',
       t / st --> t' / st' ->
-      gyeild t / st --> gyeild t' / st'
+      gyield t / st --> gyield t' / st'
   (* generator - next *)
   | ST_Gnext1 : forall t t' st st',
       t / st --> t' / st' ->
@@ -334,15 +331,15 @@ Inductive step : tm * store -> tm * store -> Prop :=
   (* generator - next - apply body function *)
   | ST_Gnext3 : forall l t st,
       gnext (pair (loc l) (abs "_" Unit t)) / st 
-      --> gnext (pair (loc l) (app (abs "_" Unit t) unit)) / st
-  (* generator - next - apply body function - (yeild, rest seq)  *)
+      --> gnext (pair (loc l) t) / st
+  (* generator - next - apply body function - (yield, rest seq)  *)
   | ST_Gnext4 : forall l t1 t2 st,
-      gnext (pair (loc l) (pair t1 t2)) / st
-      --> seq (assign (loc l) (ref t2))  t1 / st
-  (* generator - next - apply body function - (yeild)*)
+      gnext (pair (loc l) (pair (gyield t1) t2)) / st
+      --> ["_":=(assign (loc l) (ref t2))]t1 / st
+  (* generator - next - apply body function - (yield)*)
   | ST_Gnext5 : forall l t st,
-      gnext (pair (loc l) (gyeild t)) / st
-      --> seq (assign (loc l) unit)  t / st
+      gnext (pair (loc l) (gyield t)) / st
+      --> ["_":=(assign (loc l) unit)]t / st
 
 where "t1 '/' st1 '-->' t2 '/' st2" := (step (t1,st1) (t2,st2)).
 
@@ -433,9 +430,9 @@ Inductive has_type : context -> store_ty -> tm -> ty -> Prop :=
       (update Gamma x T1); ST |- t2 \in T2 ->
       Gamma; ST |- (tlet x t1 t2) \in T2
   (* fix *)
-  | T_Fix : forall Gamma ST t1 T1,
-      Gamma; ST |- t1 \in (Arrow T1 T1) ->
-      Gamma; ST |- (tfix t1) \in T1
+  | T_Fix : forall Gamma ST t1 T1 T2,
+      Gamma; ST |- t1 \in (Arrow T1 T2) ->
+      Gamma; ST |- (tfix t1) \in T2
   (* while *)
   | T_While : forall Gamma ST t1 t2 T,
       Gamma; ST |- t1 \in (Arrow T Bool) ->
@@ -446,9 +443,9 @@ Inductive has_type : context -> store_ty -> tm -> ty -> Prop :=
       Gamma; ST |- t1 \in (Arrow T1 (Ref (Arrow Unit T2))) ->
       Gamma; ST |- t2 \in T1 ->
       Gamma; ST |- gen t1 t2 \in Ref (Itr T1)
-  | T_Gyeild : forall Gamma ST t T,
+  | T_Gyield : forall Gamma ST t T,
       Gamma; ST |- t \in T ->
-      Gamma; ST |- gyeild t \in T
+      Gamma; ST |- gyield t \in T
   | T_Gnext : forall Gamma ST t T,
       Gamma; ST |- t \in Ref (Itr T) ->
       Gamma; ST |- gnext t \in T

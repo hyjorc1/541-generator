@@ -1,5 +1,4 @@
 \section{Approach}
-\label{sec:approach}
 
 \subsection{Exit Point and Re-entry Point}
 The key idea of the generator function is how to encounter and build exit point and re-entry point in the function. 
@@ -86,11 +85,11 @@ B = \x':(Ref Nat).
 		yield !x'; 
 		x' := succ !x'
 \end{lstlisting}
-I defined a \gen term to construct a iterable generator object in type (Itr T) by taken a generator function and a corresponding input. To iterate each item returned at the \textit{yield} exit point of a 
-\gen term, we use a \nt function shown as below.
+I defined a \gen term to construct a iterable generator object in type (Itr T) by taken a generator function and a corresponding input. To iterate each item returned at the \textit{yield} exit point of a \gen term, we use a \nt function shown as below. Here, the $x, y$ are the first two items returned from the generator $g$.
 \begin{lstlisting}[basicstyle=\small, numbers=left]
 let g = gen G x in 
-next(g);
-next(g)
+let x = next(g) in
+let y = next(g) in
+(x, y)
 \end{lstlisting}
 In the following sections, I provide the approaches including syntax, operation semantics, and typing of this generator feature. 
