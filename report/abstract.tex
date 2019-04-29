@@ -1,0 +1,6 @@
+% $Id: abstract.tex,v 1.1.1.1 2007/10/03 22:28:18 hridesh Exp $
+\begin{itemize}
+One of the beauties for programming languages is to optimize massively redundant program instructions in order to lower the implementation effort by human beings. \while as one of the most significant features in programming languages is used for iterating over a \lst with the repeated instructions. However, memory usage could not be affordable if the stream data contains a large number of values. In that case, we proposed a generator that yields items instead of returning a \lst for memory efficiency. It is very similar to the implementation that built a list in memory but has the memory usage characteristic of the iterator implementation. Nonetheless, if the iteration needs to be performed multiple times, then generating a list in memory might be worth it since making an integer is a very expensive process. In other words, a generator will provide performance benefits only if we do not intend to use that set of generated values more than once and the memory usage of the \lst is reasonable.
+\end{itemize}
+
+% keywords: generator, iterator, for loop,  memory efficient

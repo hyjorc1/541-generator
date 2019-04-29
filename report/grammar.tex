@@ -1,0 +1,77 @@
+%{grammar}, needs {obey}
+
+%\newcommand{\heading}[1]{\vspace{3ex}{\noindent#1}\vspace{1.5ex}}
+\newcommand{\goesto}{\mbox{$::=$}}
+\newcommand{\arbno}[1]{#1\hbox{\rm*}}
+\newcommand{\nonterm}[1]{\mbox{$\langle$#1$\rangle$}}
+
+\newenvironment{grammar}{
+  \def\:{\goesto{}}
+  \def\|{$\vert$}
+  \tt \myobeycr%
+  \begin{tabbing}%
+  \qquad \= $\vert$ \= \qquad \= \kill%
+}%
+{\unskip\end{tabbing}}
+
+\newenvironment{grammar*}{
+  \def\:{\goesto{}}
+  \def\|{$\vert$}
+  \tt%
+  \begin{tabbing}%
+  \qquad \= $\vert$ \= \qquad \= \kill%
+}%
+{\unskip\end{tabbing}}
+
+\newenvironment{roman-grammar}{
+  \def\:{\goesto{}}
+  \def\|{$\vert$}
+  \myobeycr%
+  \begin{tabbing}%
+  \qquad \= $\vert$ \= \qquad \= \hspace*{5cm} \= \qquad \= \kill%
+}%
+{\unskip\end{tabbing}}
+
+\newenvironment{roman-grammar*}{
+  \def\:{\goesto{}}
+  \def\|{$\vert$}
+  \begin{tabbing}%
+  \qquad \= $\vert$ \= \qquad \= \hspace*{5cm} \= \qquad \= \kill%
+}%
+{\unskip\end{tabbing}}
+
+\newenvironment{mathGrammar}{
+  \def\:{\goesto{}}
+  \def\|{\hbox{$\vert$}}
+   \begin{displaymath}%
+     \tt \obeyspaces%
+}%
+{\unskip\end{displaymath}}
+
+% Commented grammars
+
+% length before comments start on right
+\newlength{\BEFOREGRAMCOMMENTLEN}
+\setlength{\BEFOREGRAMCOMMENTLEN}{7cm}
+
+% style of text inside quotations
+\newcommand{\GRAMCOMMENTSTYLE}[1]{\texttt{#1}}
+
+\newenvironment{commented-grammar}{%
+\begin{grammar}%
+\qquad \= $\vert$ \= \qquad \hspace*{\BEFOREGRAMCOMMENTLEN} \= \kill%
+}{\end{grammar}}%
+
+\newcommand{\gramcomment}[1]{\textrm{``\GRAMCOMMENTSTYLE{#1}''}}
+
+% Compressed tabular grammar - takes less space
+%
+\newenvironment{cgrammar}{
+\def\|{$\vert$}
+\begin{tabular}{>{\raggedright}p{1.5cm}>{\raggedright}p{0.8cm}>{\raggedright}p{5.5cm}}%
+}{\end{tabular}}%
+% Production takes three parameters
+% name, start symbol, production
+% TODO: Extend using ithen package so that it is only defined within the cgrammar
+% package.
+\newcommand{\production}[3]{\mbox{#1} & \nonterm{#2}~\goesto & #3 \tabularnewline}

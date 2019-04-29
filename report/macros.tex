@@ -1,0 +1,95 @@
+
+\usepackage{relsize}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage{colortbl}
+\usepackage{mathpartir}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage{comment}
+\usepackage{graphicx}
+% Added listing for code listings
+
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+	basicstyle=\small,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=none,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{flushend}
+
+% formatting for grammars
+%\input{obey}
+%\input{grammar}
+%\renewcommand{\nonterm}[1]{\mbox{\textit{#1}}}
+%\newcommand{\oneormore}[1]{#1\ensuremath{^+}}
+\usepackage{mdwtab}
+\usepackage{syntax} 
+\renewcommand{\syntleft}{}          % do not display '<' associated with variable, for example <A>
+\renewcommand{\syntright}{}         % do not display '>' associated with variable, for example <A>
+
+
+
+
+% Uncomment this to include oper-semantics related macros
+% \input{oper-macros}
+
+% Uncomment this to include type-checking related macros
+% \input{type-macros}
+
+
+% Help LaTeX not violate the column margins
+\tolerance=50000
+
+\newcommand*{\code}[1]{\texttt{#1}}
+
+% could use \relsize{-2} instead of \scriptsize below
+\newcommand{\FIGCODEFONT}{\relsize{-1}\ttfamily}
+
+\newcommand{\LSTAJFILE}[1]{
+\lstinputlisting[basicstyle=\FIGCODEFONT]{#1}
+}
+\newcommand{\LSTAJFILESLICE}[2]{
+\lstinputlisting[gobble=4,basicstyle=\FIGCODEFONT,linerange={#1}]{#2}
+}
+
+% cross referencing
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\fignref}[1]{Figure~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\secnref}[1]{Section~\ref{#1}}
+
+\newcommand{\etal}{~\textit{et al.}}
+\newcommand{\kind}{\textit{kind}}
+\newcommand{\KIND}{\textit{KIND}}
+
+% Allow figures to take up the entire page
+\renewcommand\floatpagefraction{.99}
+\renewcommand\topfraction{.99}
+\renewcommand\bottomfraction{.90}
+\renewcommand\textfraction{.01}
+
+% Theorems environment...
+%{theorems}
+% Some helpful notation
+\newcommand{\PROOF}{{\em Proof:\/}~~}
+\newcommand{\PROOFSKETCH}{{\em Proof Sketch:\/}~~}
+\newcommand{\QED}{\rule{0.4em}{0.65em}}
+
+\definecolor{light-gray}{gray}{0.75}

@@ -1,0 +1,21 @@
+\begin{thebibliography}{1}
+
+\bibitem{generators}
+AshishSingh:
+\newblock Generators.
+\newblock \url{https://wiki.python.org/moin/Generators} Accessed: 2018-03-08.
+
+\bibitem{magic}
+Abbas, S.K.:
+\newblock The magic behind python generator functions.
+\newblock
+  \url{https://hackernoon.com/the-magic-behind-python-generator-functions-bc8eeea54220}
+  Accessed: Aug 1, 2017.
+
+\bibitem{whileloop}
+chi (https://cs.stackexchange.com/users/43599/chi):
+\newblock $\lambda$-calculus, is there encoding of for or while?
+\newblock Computer Science Stack Exchange
+  URL:https://cs.stackexchange.com/q/88637 (version: 2018-03-01).
+
+\end{thebibliography}

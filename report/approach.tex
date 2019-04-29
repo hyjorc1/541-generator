@@ -1,0 +1,96 @@
+\section{Approach}
+\label{sec:approach}
+
+\subsection{Exit Point and Re-entry Point}
+The key idea of the generator function is how to encounter and build exit point and re-entry point in the function. 
+To solve this problem, the first step is to implement sequence function and we can write
+\begin{lstlisting}[basicstyle=\small]
+r; r := succ(r)
+\end{lstlisting}
+as an abbreviation for 
+\begin{lstlisting}[basicstyle=\small]
+(\x:Unit. (r := succ(r)) (r)
+\end{lstlisting}
+Let's suppose the sequence is in a function. When it encounter a \textit{yield} term as shown below, we need a exit point that can pause the function and return the content in the \textit{yield} term and a re-entry point to resume the rest code of function.
+\begin{lstlisting}[basicstyle=\small]
+yield r; r := succ(r)
+\end{lstlisting}
+To achieve this goal, I designed a naive \textit{tseq} function shown as below that takes two terms \textit{t1} and \textit{t2}. If the \textit{t1} is a \textit{yield} term, then it returns a \textit{exit} pair of terms (t1', (abs "_" Unit t2)), where t1' is the actual content returned at that exit point and (abs "_" Unit t2) is the remainder fo the function without reduction or execution.
+\begin{lstlisting}[basicstyle=\small]
+Definition tseq t1 t2 := 
+match t1 with 
+| gyield t1' => pair t1' (abs "_" Unit t2)
+| _ => app (abs "_" Unit t2) t1
+end.
+\end{lstlisting}
+By applying our \textit{tseq} function, the output of the yield sequence shown above would be:
+\begin{lstlisting}[basicstyle=\small]
+(r,  (\_:Unit. r := succ(r))
+\end{lstlisting}
+However, I implemented a sequence term \textit{seq} in my project instead of the \textit{tseq} function for easing \textit{seq} concatenation.
+
+\subsection{Yield in Iteration}
+To make sure the \textit{tseq} function would work in a iteration, more explicitly the second term of the returned  \textit{exit} pair should contain the rest iterations of a loop, we need to define the loop recursively with \textit{fixed point}. A \while loop can be defined as below, where $p$ is a predicate function of input $r$.
+\begin{lstlisting}[basicstyle=\small]
+while (p(r)) {
+	yield r; 
+	r := succ(r)
+}
+\end{lstlisting}
+Then we can define a \while function with the \textit{fixed point}.
+\begin{lstlisting}[basicstyle=\small]
+def while (r) {
+	if p(x) do
+		  yield r; 
+	    r := succ(r);
+		  while(r)
+}
+\end{lstlisting}
+In this way, there is a \textit{exit} pair returned in each \while iteration. The corresponding proof is provided for the \while term in the operation semantic section.
+
+\subsection{Generator Feature}
+I will show how my generator feature works in my language. First, let's give an example about an ordinary function \textit{F}. In line 2, the \textit{x} is the number argument passing into the function and \textit{x'} is the reference for \textit{x}. In line 3 and 4, we increase and decrease the number by 1 in the reference \textit{x'}. Then in line 5, we apply a \while term constructed by a predicate function $P$ and a body function $B$ to \textit{x'}. At last, we return the value of under the reference cell \textit{x'} in line 6.
+\begin{lstlisting}[basicstyle=\small, numbers=left]
+F = \x: Nat.
+		let x' = (ref x) in 
+		x' := succ (deref x');
+		x' := pred (deref x');
+		while P B x';
+		!x'
+\end{lstlisting}
+The predicate and body functions in the \while term are: 
+\begin{lstlisting}[basicstyle=\small]
+P = \x':(Ref Nat). (deref x') < 5
+B = \x':(Ref Nat). x' := succ !x'
+\end{lstlisting}
+Next, let's see an example for a generator function. The generator \textit{G} is similar to the function \textit{F}. However, the generator returns a reference of a unit function with a sequence body instead of a pure sequence term in two main reasons:
+\begin{enumerate}
+	\item A generator function will be turned to a iterable object by given an input.
+	\item A unit function can prevent the reduction process of the \textit{seq} term in the \textit{ref} term. Because I only want the \textit{seq} term be reduced in the \nt term. 
+\end{enumerate}
+\begin{lstlisting}[basicstyle=\small, numbers=left]
+G = \x: Nat.
+		let x' = (ref x) in 
+		ref ( \_: Unit.
+					x' := succ (deref x');
+					yield !x';
+					x' := pred (deref x');
+					yield !x';
+					while P B x';
+					yield !x')
+\end{lstlisting}
+The predicate and body functions in the \while term are:
+\begin{lstlisting}[basicstyle=\small, numbers=left]
+P = \x':(Ref Nat). (deref x') < 5
+B = \x':(Ref Nat). 
+		yield !x'; 
+		x' := succ !x'
+\end{lstlisting}
+I defined a \gen term to construct a iterable generator object in type (Itr T) by taken a generator function and a corresponding input. To iterate each item returned at the \textit{yield} exit point of a 
+\gen term, we use a \nt function shown as below.
+\begin{lstlisting}[basicstyle=\small, numbers=left]
+let g = gen G x in 
+next(g);
+next(g)
+\end{lstlisting}
+In the following sections, I provide the approaches including syntax, operation semantics, and typing of this generator feature. 

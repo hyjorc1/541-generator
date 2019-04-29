@@ -1,0 +1,57 @@
+\section{Typing}
+\label{sec:type}
+The type system is used to assign a property called type to various terms in order to remove stuck terms. 
+In my language, the types such as \textit{Arrow}, \textit{Nat}, \textit{Bool}, \textit{List}, \textit{Unit}, and \textit{Prod} are similar to the types in chapter \textit{MoreStlc}.
+They are used to specify the types for lambda calculus, natural number, boolean, list, unit, and pair.
+I also added a new type \textit{Itr T} to identify the iterable term like \gen. 
+The first term of the \nt function must be a iterable term.
+
+
+\subsection{Let}
+The \lt term has a type $T2$  if only if that 1) $t1$ has a type $T1$ and 2) $t2$ has a type $T2$ in the $Gamma$ where the $x$ has type $T1$ in.
+\begin{lstlisting}
+Typing:
+
+											Gamma |- t1 \in T1
+										x |->T1; Gamma |- t2 \in T2
+								 ---------------------------------   (T_Let)
+									 Gamma |- let x=t1 in t2 \in T2
+\end{lstlisting}
+
+\subsection{Fix}
+The \fix term has a type $T1$ if only if that $t1$ has a type $T1 \rightarrow T1$.
+\begin{lstlisting}
+Typing:
+
+									     Gamma |- t1 \in T1 -> T1
+									---------------------------------   (T_Fix)
+									 		  Gamma |- fix t1 \in T1
+\end{lstlisting}
+
+\subsection{While}
+The \while term has a type $T$ if only if that the predicate function $t1$ has a type $T \rightarrow Bool$ and the body function $t2$ has a type $T \rightarrow T$.
+\begin{lstlisting}
+Typing:
+
+									     Gamma |- t1 \in T -> Bool
+									     Gamma |- t2 \in T -> T
+									---------------------------------   (T_While)
+										  Gamma |- while t1 t2 \in T
+\end{lstlisting}
+
+
+\subsection{Generator}
+The \gen term has a type ($Itr$ $T$) if only if that the predicate function $t1$ has a type $T \rightarrow Bool$ and the body function $t2$ has a type $T \rightarrow T$. And the \nt term has a type ($T*T$) if only if the $t1$ iterable with a type ($Itr$ $T$) and the body function $t2$ has a type $T$.
+\begin{lstlisting}
+Typing:
+
+										  Gamma |- t1 \in T -> Bool
+										  Gamma |- t2 \in T -> T
+									---------------------------------   (T_Gen)
+										Gamma |- gen t1 t2 \in (Itr T)
+
+										  Gamma |- t1 \in (Itr T)
+										  Gamma |- t2 \in T
+									---------------------------------   (T_Next)
+										Gamma |- next t1 t2 \in (T * T)
+\end{lstlisting}

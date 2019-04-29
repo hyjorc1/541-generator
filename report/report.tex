@@ -1,0 +1,41 @@
+% $Id: paper.tex,v 1.1.1.1 2007/10/03 22:28:18 hridesh Exp $
+\newcommand{\fl}{\textit{for loop}\xspace}
+\newcommand{\lst}{\textit{list}\xspace}
+\newcommand{\lt}{\textit{let}\xspace}
+\newcommand{\fix}{\textit{fix}\xspace}
+\newcommand{\while}{\textit{while}\xspace}
+\newcommand{\gen}{\textit{gen}\xspace}
+\newcommand{\nt}{\textit{next}\xspace}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\documentclass{llncs}
+\input{macros.tex}
+
+%\usepackage{syntax}
+\begin{document}
+
+\title{Project Report: Generator in Lambda Calculus}
+\author{Yijia Huang\inst{1} }
+\institute{Iowa State University, Ames, IA, 50011, USA,\\
+\email{hyj@iastate.edu},\\ } 
+\maketitle
+
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+
+\input{intro.tex}
+%\input{motivation.tex}
+\input{approach.tex}
+\input{syntax.tex} 
+\input{os.tex} 
+\input{type.tex}
+%\input{evaluation.tex}
+%\input{conclusion.tex}
+
+%\section{Acknowledgments}
+
+\bibliographystyle{splncs}
+\bibliography{refs}  
+
+\end{document}
+
