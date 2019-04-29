@@ -427,8 +427,7 @@ Inductive has_type : context -> store_ty -> tm -> ty -> Prop :=
   (* let *)
   | T_Let : forall Gamma ST x t1 T1 t2 T2,
       Gamma; ST |- t1 \in T1 ->
-      (update Gamma x T1); ST |- t2 \in T2 ->
-      Gamma; ST |- (tlet x t1 t2) \in T2
+      (update Gamma x T1); ST |- t2 \in T2 -> Gamma; ST |- (tlet x t1 t2) \in T2
   (* fix *)
   | T_Fix : forall Gamma ST t1 T1 T2,
       Gamma; ST |- t1 \in (Arrow T1 T2) ->
