@@ -2,19 +2,19 @@
 
 \subsection{Exit Point and Re-entry Point}
 The key idea of the generator function is how to encounter and build exit point and re-entry point in the function. 
-To solve this problem, the first step is to implement sequence function and we can write
+To solve this problem, the first step is to implement sequence and we can write 
 \begin{lstlisting}[basicstyle=\small]
 r; r := succ(r)
 \end{lstlisting}
 as an abbreviation for 
 \begin{lstlisting}[basicstyle=\small]
-(\x:Unit. (r := succ(r)) (r)
+(\x:Unit. (r := succ(r)) r
 \end{lstlisting}
-Let's suppose the sequence is in a function. When it encounter a \textit{yield} term as shown below, we need a exit point that can pause the function and return the content in the \textit{yield} term and a re-entry point to resume the rest code of function.
+Let's define a \textit{yield} term in the sequence as shown below. When the program flow encounters a \textit{yield} term, the term is regarded as an \textit{exit} point that can pause the program process to return the content in it and a re-entry point to resume the rest executions of function.
 \begin{lstlisting}[basicstyle=\small]
 yield r; r := succ(r)
 \end{lstlisting}
-To achieve this goal, I designed a naive \textit{tseq} function shown as below that takes two terms \textit{t1} and \textit{t2}. If the \textit{t1} is a \textit{yield} term, then it returns a \textit{exit} pair of terms (t1', (abs "_" Unit t2)), where t1' is the actual content returned at that exit point and (abs "_" Unit t2) is the remainder fo the function without reduction or execution.
+To achieve this goal, I designed a naive \textit{tseq} function shown as below that takes two terms \textit{t1} and \textit{t2}. If the \textit{t1} is a \textit{yield} term, then it returns an \textit{exit} pair of terms (t1', (abs "_" Unit t2)), where t1' is the actual content returned at that exit point and (abs "_" Unit t2) is the remainder executions of the function without further reduction.
 \begin{lstlisting}[basicstyle=\small]
 Definition tseq t1 t2 := 
 match t1 with 
@@ -22,11 +22,11 @@ match t1 with
 | _ => app (abs "_" Unit t2) t1
 end.
 \end{lstlisting}
-By applying our \textit{tseq} function, the output of the yield sequence shown above would be:
+By applying our \textit{tseq} function, the sequence shown above would be a pair:
 \begin{lstlisting}[basicstyle=\small]
 (r,  (\_:Unit. r := succ(r))
 \end{lstlisting}
-However, I implemented a sequence term \textit{seq} in my project instead of the \textit{tseq} function for easing \textit{seq} concatenation.
+However, I implemented a sequence term \textit{seq} in my project instead of the \textit{tseq} function for easing sequence concatenation.
 
 \subsection{Yield in Iteration}
 To make sure the \textit{tseq} function would work in a iteration, more explicitly the second term of the returned  \textit{exit} pair should contain the rest iterations of a loop, we need to define the loop recursively with \textit{fixed point}. A \while loop can be defined as below, where $p$ is a predicate function of input $r$.
@@ -45,7 +45,7 @@ def while (r) {
 		  while(r)
 }
 \end{lstlisting}
-In this way, there is a \textit{exit} pair returned in each \while iteration. The corresponding proof is provided for the \while term in the operation semantic section.
+In this way, there is an \textit{exit} pair returned in each \while iteration. The corresponding proof is provided for the \while term in the operation semantic section.
 
 \subsection{Generator Feature}
 I will show how my generator feature works in my language. First, let's give an example about an ordinary function \textit{F}. In line 2, the \textit{x} is the number argument passing into the function and \textit{x'} is the reference for \textit{x}. In line 3 and 4, we increase and decrease the number by 1 in the reference \textit{x'}. Then in line 5, we apply a \while term constructed by a predicate function $P$ and a body function $B$ to \textit{x'}. At last, we return the value of under the reference cell \textit{x'} in line 6.
@@ -65,7 +65,7 @@ B = \x':(Ref Nat). x' := succ !x'
 Next, let's see an example for a generator function. The generator \textit{G} is similar to the function \textit{F}. However, the generator returns a reference of a unit function with a sequence body instead of a pure sequence term in two main reasons:
 \begin{enumerate}
 	\item A generator function will be turned to a iterable object by given an input.
-	\item A unit function can prevent the reduction process of the \textit{seq} term in the \textit{ref} term. Because I only want the \textit{seq} term be reduced in the \nt term. 
+	\item A unit function can prevent the reduction process of the \textit{seq} term in the \textit{ref} term. Because I want the \textit{seq} term only be reduced in the \nt term which is used to iterate each items of a iterable object. 
 \end{enumerate}
 \begin{lstlisting}[basicstyle=\small, numbers=left]
 G = \x: Nat.
@@ -85,7 +85,7 @@ B = \x':(Ref Nat).
 		yield !x'; 
 		x' := succ !x'
 \end{lstlisting}
-I defined a \gen term to construct a iterable generator object in type (Itr T) by taken a generator function and a corresponding input. To iterate each item returned at the \textit{yield} exit point of a \gen term, we use a \nt function shown as below. Here, the $x, y$ are the first two items returned from the generator $g$.
+I defined a \gen term to construct a iterable generator object in type (Itr T) by taken a generator function and a corresponding input. To iterate each item returned at the \textit{yield} exit point of a \gen term, I implemented a \nt function shown as below. Here, the $x, y$ are the first two items returned from the generator $g$.
 \begin{lstlisting}[basicstyle=\small, numbers=left]
 let g = gen G x in 
 let x = next(g) in

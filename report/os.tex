@@ -3,8 +3,9 @@
 The operational semantics of a programming language is used to interpret a valid program into sequences of computational steps. And these sequences are the meaning of the program. In this section, I will describe the operational semantics for the generator feature.
 
 \subsection{Sequence}
-The \textit{seq} term can be constructed by taking two terms, where both could be \textit{seq} terms. 
-\textbf{ST_Seq1}: If t1 is a \textit{seq} term, then concatenate t1 with t2. 
+The \textit{seq} term can be constructed by taking two terms, where both could be \textit{seq} terms.
+I also defined three help functions: \textit{yield_tm} for checking the \textit{yield} term, \textit{seq_tm} for check the \textit{seq} term, and \textit{seqCat} for the concatenation of two terms.
+For the reduction, \textbf{ST_Seq1}: If t1 is a \textit{seq} term, then concatenate t1 with t2. 
 \textbf{ST_Seq2}: If t1 is not a \textit{seq} term, then reduce t1 to t1'. 
 \textbf{ST_Seq3}: If v1 is a \textit{yield} term, then return a \textit{exit} pair. 
 \textbf{ST_Seq4}: If v1 is not a \textit{yield} term, then return a t2.
@@ -98,7 +99,7 @@ Reduction:
 \end{lstlisting}
 
 \subsection{Fix}
-Lambda calculus is a universal model of computation which is well defined in Chapter \textit{Stlc}. Then, can we define a general recursion with this. Let us define the \textit{fixed point} $Y = \lambda f. (\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g))$. Then the recursion function $f$ could be defined as follow:
+Lambda calculus is a universal model of computation which is well defined in Chapter \textit{Stlc}. Then, we can define a general recursion with this. Let us define the \textit{fixed point} $Y = \lambda f. (\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g))$. Then the recursion function $f$ could be defined as follow:
 \begin{align*}
 Yf &=  \lambda f. ((\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g))) f \\
 &=  (\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g)) \\
@@ -122,7 +123,7 @@ Reduction:
 \end{lstlisting}
 
 \subsection{While}
-Since \while loop can be implemented in recursion as shown below, assume $x$ has a reference type, then we can form a \while function either in induction or a lambda calculus. $P$ is a predicate function of $x$, and $B$ is a body function of $x$.
+Since \while loop can be implemented in recursion as shown below, assume $x$ has a reference type, then we can implement \while function either in induction or lambda calculus. Here, $P$ is a predicate function of $x$, and $B$ is a body function of $x$ in the following function.
 \begin{lstlisting}
 def while (P,B,x) {
 		if P(x) do
@@ -137,7 +138,7 @@ fix \f:(Ref T)->Unit.
 		if (\x:(Ref T). p x) 
 		do (seq (\x:(Ref T). b x) (f x)) else unit
 \end{lstlisting}
-In this way, (while P B x) always return a \textit{seq} term or a unit term. 
+In this way, (while P B x) always return a \textit{seq} term or a unit term. So, the \textit{exit} pair would be triggered by the reduction of \textit{seq} even a \textit{yield} term is nested in a \while term that itself is also a term in a sequence.
 \begin{lstlisting}
 Reduction:
 
@@ -161,7 +162,7 @@ Reduction:
 \subsection{Generator}
 \textbf{ST_Gen3}: The \gen term takes a generator function and a corresponding input and returns a reference of a iterable object.
 \textbf{ST_Gnext2}: The \nt function takes a \gen term and reduces it into a pair, where the first term the generator's reference and the second is the value under it.
-\textbf{ST_Gnext3, ST_Gnext1}: Reduce the body term of the unit function.
+\textbf{ST_Gnext3}: If the second term of pair is a unit function, apply and reduce the body term $t$ with \textbf{ST_Gnext1}.
 \textbf{ST_Gnext4}: If the second term is a \textit{exit} pair, update the generator's reference with the new generator v2 and return v1.
 \textbf{ST_Gnext5}: If the second term is a \textit{yield} term, update the generator's reference with unit and return v.
 \begin{lstlisting}
@@ -177,8 +178,7 @@ Reduction:
 							  
 							  
 						------------------------------------- (ST_Gen3)
-						 gen (\x:T. g) v / st
-										--> [x:=v]g / st
+						 gen (\x:T. g) v / st --> [x:=v]g / st
 													
 									    t / st --> t' / st'
 								------------------------------   (ST_Gyield)

@@ -325,10 +325,10 @@ Inductive step : tm * store -> tm * store -> Prop :=
   | ST_Gnext1 : forall t t' st st',
       t / st --> t' / st' ->
       gnext t / st --> gnext t' / st'
-  (* generator - next - deref body function *)
+  (* generator - next - deref generator reference *)
   | ST_Gnext2 : forall l st,
       gnext (loc l) / st --> gnext (pair (loc l) (deref (loc l))) / st
-  (* generator - next - apply body function *)
+  (* generator - next - reduce generator body term *)
   | ST_Gnext3 : forall l t st,
       gnext (pair (loc l) (abs "_" Unit t)) / st 
       --> gnext (pair (loc l) t) / st
