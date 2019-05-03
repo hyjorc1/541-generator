@@ -62,8 +62,13 @@ Inductive tm : Type :=
   | gyield : tm -> tm
   | gnext : tm -> tm.
 
+Notation "t1 ; t2" := (seq t1 t2) (at level 80, right associativity).
+
 Inductive yield_tm : tm -> Prop :=
   | Tgyield : forall t, yield_tm (gyield t).
+
+Inductive exit_tm : tm -> Prop :=
+  | Texit : forall t1 t2, exit_tm (pair (gyield t1) (abs "_" Unit t2)).
 
 Inductive seq_tm : tm -> Prop :=
   | Tseq : forall t1 t2, seq_tm (seq t1 t2).
@@ -112,7 +117,6 @@ Fixpoint subst (x:string) (s:tm) (t:tm) : tm :=
   end.
 
 Notation "'[' x ':=' s ']' t" := (subst x s t) (at level 20).
-
 
 (* ----------------------------------------------------------------- *)
 (** *** Syntax Value *)
@@ -172,6 +176,16 @@ Fixpoint seqCat (s : tm) (t : tm) : tm :=
 Compute seqCat (seq (const 0) (seq (const 1) (const 2))) (const 3).
 Compute (gyield (const 0)) = (const 1).
 Compute not. Compute not True. Compute not False. *)
+
+(* generator *)
+Fixpoint yield_lookup (s : tm) : tm :=
+  match s with
+  | seq (gyield t1) t2 => pair (gyield t1) (abs "_" Unit t2)
+  | seq t1' t2' => app (abs "_" Unit t2') t1'
+  | _ => unit
+  end.
+(* Compute yield_lookup (seq (const 0) (seq (const 1) (const 3))).
+Compute yield_lookup (seq (gyield (const 0)) (seq (const 1) (const 3))). *)
 
 
 Reserved Notation "t1 '/' st1 '-->' t2 '/' st2" 
@@ -247,12 +261,7 @@ Inductive step : tm * store -> tm * store -> Prop :=
       seq t1 t2 / st --> seqCat t1' t2 / st'
   | ST_Seq3 : forall v1 t2 st,
       value v1 ->
-      yield_tm v1 ->
-      seq v1 t2 / st --> pair v1 (abs "_" Unit t2) / st
-  | ST_Seq4 : forall v1 t2 st,
-      value v1 ->
-      not (yield_tm v1) ->
-      seq v1 t2 / st --> t2 / st
+      seq v1 t2 / st --> app (abs "_" Unit t2) v1 / st
   (* reference *)
   | ST_RefValue : forall v st,
       value v ->
@@ -298,12 +307,12 @@ Inductive step : tm * store -> tm * store -> Prop :=
       value v1 ->
       t2 / st --> t2' / st' ->
       twhile v1 t2 / st --> twhile v1 t2' / st'
-  | ST_WhileFix : forall x1 T p x2 b f x st,
-      twhile (abs x1 (Ref T) p) (abs x2 (Ref T) b) / st
-      --> tfix (abs f (Arrow (Ref T) Unit)
-               (abs x (Ref T)
-               (test (app (abs x1 (Ref T) p) (var x))
-                     (seq (app (abs x2 (Ref T) b) (var x))
+  | ST_WhileFix : forall x1 T1 T2 p x2 b f x st,
+      twhile (abs x1 (Ref T1) p) (abs x2 (Ref T1) b) / st
+      --> tfix (abs f (Arrow (Ref T1) T2)
+               (abs x (Ref T1)
+               (test (app (abs x1 (Ref T1) p) (var x))
+                     (seq (app (abs x2 (Ref T1) b) (var x))
                           (app (var f) (var x)))
                      unit))) / st
   (* generator*)

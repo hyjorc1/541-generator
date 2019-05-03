@@ -4,15 +4,11 @@ The operational semantics of a programming language is used to interpret a valid
 
 \subsection{Sequence}
 The \textit{seq} term can be constructed by taking two terms, where both could be \textit{seq} terms.
-I also defined three help functions: \textit{yield_tm} for checking the \textit{yield} term, \textit{seq_tm} for check the \textit{seq} term, and \textit{seqCat} for the concatenation of two terms.
+I also defined \textit{seq_tm} for check the \textit{seq} term and \textit{seqCat} for the concatenation of two terms.
 For the reduction, \textbf{ST_Seq1}: If t1 is a \textit{seq} term, then concatenate t1 with t2. 
-\textbf{ST_Seq2}: If t1 is not a \textit{seq} term, then reduce t1 to t1'. 
-\textbf{ST_Seq3}: If v1 is a \textit{yield} term, then return a \textit{exit} pair. 
-\textbf{ST_Seq4}: If v1 is not a \textit{yield} term, then return a t2.
+\textbf{ST_Seq2}: If t1 is not a \textit{seq} term and it is reducible, then reduce t1 to t1'. 
+\textbf{ST_Seq3}: If v1 is a value, then apply v1 with a unit function with body t2.
 \begin{lstlisting}
-Inductive yield_tm : tm -> Prop :=
-| Tgyield : forall t, yield_tm (gyeild t).
-
 Inductive seq_tm : tm -> Prop :=
 | Tseq : forall t1 t2, seq_tm (seq t1 t2).
 
@@ -23,7 +19,6 @@ match s with
 end.
 
 Reduction:
-
 									    		seq_tm t1
 								---------------------------------  (ST_Seq1)
 								seq t1 t2 / st --> seqCat t1 t2 / st
@@ -33,15 +28,9 @@ Reduction:
 								--------------------------------   (ST_Seq2)
 								seq t1 t2 / st --> seq t1' t2 / st'
 								
-												yield_tm v1
-								--------------------------------   (ST_Seq3)
-								seq v1 t2 / st 
-									--> pair v1 (\_:Unit t2) / st
-								
-											not (yield_tm v1)
-								-------------------------------  (ST_Seq4)
-									seq v1 t2 / st --> t2 / st
 
+								--------------------------------   (ST_Seq3)
+							seq v1 t2 / st --> (\_:Unit. t2) v1 / st
 \end{lstlisting}
 
 \subsection{Reference}
@@ -132,11 +121,11 @@ def while (P,B,x) {
 \end{lstlisting}
 Then, the \while term can be formalized as:
 \begin{lstlisting}
-while (\x:(Ref T). p) (\x:(Ref T). b) =
-fix \f:(Ref T)->Unit. 
-		\x:(Ref T). 
-		if (\x:(Ref T). p x) 
-		do (seq (\x:(Ref T). b x) (f x)) else unit
+while (\x:(Ref T1). p) (\x:(Ref T1). b) =
+fix \f:(Ref T1)->Unit. 
+		\x:(Ref T1). 
+		if (\x:(Ref T1). p x) 
+		do (seq (\x:(Ref T1). b x) (f x)) else unit
 \end{lstlisting}
 In this way, (while P B x) always return a \textit{seq} term or a unit term. So, the \textit{exit} pair would be triggered by the reduction of \textit{seq} even a \textit{yield} term is nested in a \while term that itself is also a term in a sequence.
 \begin{lstlisting}
@@ -151,11 +140,12 @@ Reduction:
 								while v1 t2 / st --> while v1 t2' / st'
 								
 						-------------------------------------- (ST_WhileFix)
-					while (\x1:(Ref T). p) (\x2:(Ref T). b) / st 
-					--> tfix (\f:(Ref T)->Unit. 
-					       	  (\x:(Ref T). (if \x1:(Ref T). p x
-																	then seq (\x2:T. b x) (f x)
-																  else unit))) / st'
+					while (\x1:(Ref T1). p) (\x2:(Ref T1). b) / st 
+					--> tfix (\f:(Ref T1)->T2. 
+								   (\x:(Ref T1). 
+								   (if \x1:(Ref T1). p x
+										   then seq (\x2:(Ref T1). b x) (f x)
+									     else unit))) / st'
 \end{lstlisting}
 
 
