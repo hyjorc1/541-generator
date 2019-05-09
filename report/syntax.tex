@@ -1,6 +1,6 @@
 \section{Syntax}
 \label{sec:approach}
-Abstract syntax is a structure used in the representation of text in computer languages, which are stored in a tree structure as an abstract syntax tree.
+Abstract syntax is a structure used in the representation of text in computer languages, which are stored in a tree structure as an abstract syntax tree. Here, the abstract syntax supporting for my language feature is provide below.
 %
 \begin{lstlisting}[basicstyle=\small]
 Syntax:
@@ -17,33 +17,33 @@ Syntax:
 				| while p b             while function 
 				| gen t1 t2             iterable generator
 				| yeild t								yeild term
-				| next t                next function
+				| iterate t1 t2         iterate operator
+				| next t                next operator
 
 			T ::=                		  Types
 				| ...               		
 				| (Itr T)				        Iterator type
 			
-			V ::=                		  Values
+			v ::=                		  Values
 				| ... 
-				| loc l				          reference cell location
-				| yield t               yeild term
+				| loc l				          reference value
+				| yield t               yield value
 \end{lstlisting}
-%
-\textbf{Terms}: The \textit{seq} term is used to execute each terms in a order. 
-The reference term is used to tracking variable value globally, so \textit{ref, deref, assign, loc} are needed. The \lt can bind a name \textit{x} to \textit{t1} while reduce \textit{t2}. 
-The \fix can be applied to a abstraction in order to return its \textit{fixed point} for recursion. 
-The \while takes a predicate function and a body function to form a while loop function. 
-The \gen takes a generator function and a argument used to pass into the generator. 
-The \textit{yield} term is used to trigger the exit point and re-entry point in a \textit{seq} term. 
-The \nt takes a iterable term.
-%
-
-For the other required terms, I am not going to show more details here since they are similar to those terms in chapter \textit{MoreStlc}. The \textit{number} is required to count down the rest iterations. The \textit{boolean} is required for conditional statement. The \textit{pair} is required for return pair values when the execution encounters a exit point in a generator function. The \fix is used for build \textit{while} term.
-
-%
-\textbf{Types}: The $next$ function should only take iterable terms. 
-So, I added a iterator type to identify the iterable generator. 
-And other types like Arrow, Nat, Bool, List, Unit, and Prod are similar to the terms in chapter \textit{MoreStlc}.
-
-%
-\textbf{Values}: Both \textit{loc l} and \textit{yield t} are considered as value terms without any further reduction.
+\begin{itemize}
+	\item 
+	\textbf{Terms}: The \textit{seq} term is used to execute each terms in a order. 
+	The reference term is used to tracking variable value globally, so \textit{ref, deref, assign, loc} are needed. The \lt can bind a name \textit{x} to \textit{t1} while reduce \textit{t2}. 
+	The \fix can be applied to a abstraction in order to return its \textit{fixed point} for recursion. 
+	The \while takes a predicate function and a body function to form a while loop function. 
+	The \gen takes a generator function and a argument used to pass into the generator. 
+	The \textit{yield} term is used to trigger the exit point and re-entry point in a \textit{seq} term.
+	The \textit{iterate} operator takes a iterable object's reference and the object as two arguments in oder to return the next item.
+	The \nt term takes a iterable term.
+	\item 
+	\textbf{Types}: The $next$ operator should only take iterable terms. 
+	So, I added a iterator type to identify the iterable generator. 
+	\item 
+	\textbf{Values}: Both \textit{loc l} and \textit{yield t} are value terms without any further reduction.
+	\item 
+	\textbf{Others}: For the other required terms, types, and values, I am not going to show more details here since they are similar to those terms in chapter \textit{MoreStlc}.
+\end{itemize}

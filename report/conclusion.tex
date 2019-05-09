@@ -1,13 +1,35 @@
-\section{Conclusion and Future Work}
+\section{Conclusion}
 \label{sec:conclusion}
+In this project, I extended lambda calculus with the generator feature to improve the memory efficiency of the iteration operation in Coq. The key idea to implement this feature is that, I defined a \textit{yield} term to trigger the \textit{exit} point and re-\textit{entry} point in the reduction of sequences in a function program. In this way, we can pause and resume a function program in order to iterate each generated item with constant space instead of storing all of them into a list. A generator feature demo is provided in both the Coq code file and below by comparing the ordinary function \textit{firstn} and the generator functionn \textit{gfirstn}. 
+\begin{lstlisting}
+firstn = \n:Nat.
+         let num = ref 0 in 
+         let nums = ref (nil Nat) in 
+             while P B num;
+             !nums
 
-In this section, I will summarize the key findings in 
-my work and reflect on these findings. 
-This is my opportunity to reflect and look at the bigger
-picture. What do my findings mean in a broader scheme of 
-things?
+P = \num:(Ref Nat). !num < n
+B = \num:(Ref Nat). 
+    nums := !nums.append(!num); 
+    num := succ(!num)
+\end{lstlisting}
+With the generator feature, we can not only utilize the iterative functionality in less code, but also access it through efficient memory management.
+\begin{lstlisting}
+gfirstn = \n:Nat.
+          let num = ref 0 in 
+              ref (\_:Unit (while P B num)
 
-I will also discuss ideas that I have not explored but 
-that will be interesting to look at in future. 
-
+P = \num:(Ref Nat). !num < n
+B = \num:(Ref Nat). 
+    yield !num; 
+    num := succ(!num)
+\end{lstlisting}
+Use \nt function to iterate each item of the generator.
+\begin{lstlisting}
+let g = gen gfirstn 10 in
+let x = next(g) in
+let x = next(g) in
+    (x, y);
+\end{lstlisting}
+However, the generator cannot replace the list-based iteration due to the high cost in generating items. If we need to reuse the generated values multiple times, then the usage of a list is reasonable.
 

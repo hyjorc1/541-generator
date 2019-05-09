@@ -10,7 +10,7 @@ as an abbreviation for
 \begin{lstlisting}[basicstyle=\small]
 (\x:Unit. (r := succ(r)) r
 \end{lstlisting}
-Let's define a \textit{yield} term in the sequence as shown below. When the program flow encounters a \textit{yield} term, the term is regarded as an \textit{exit} point that can pause the program process to return the content in it and a re-entry point to resume the rest executions of function.
+Let's define a \textit{yield} term in the sequence as shown below. Suppose this sequence is the body code of one function. If the function is called and the program flow encounters a \textit{yield} term, then the term would be regarded as an \textit{exit} point that can pause the program process to return the content in it and a re-entry point to resume the rest executions of the function.
 \begin{lstlisting}[basicstyle=\small]
 yield r; r := succ(r)
 \end{lstlisting}
@@ -18,18 +18,18 @@ To achieve this goal, I designed a naive \textit{tseq} function shown as below t
 \begin{lstlisting}[basicstyle=\small]
 Definition tseq t1 t2 := 
 match t1 with 
-| gyield t1' => pair t1' (abs "_" Unit t2)
-| _ => app (abs "_" Unit t2) t1
+| yield t1' => (t1', (\_:Unit. t2))
+| _ => (\_:Unit. t2) t1
 end.
 \end{lstlisting}
-By applying our \textit{tseq} function, the sequence shown above would be a pair:
+By applying our \textit{tseq} function, the sequence shown above would return a pair:
 \begin{lstlisting}[basicstyle=\small]
 (r,  (\_:Unit. r := succ(r))
 \end{lstlisting}
-However, I implemented a sequence term \textit{seq} in my project instead of the \textit{tseq} function for easing sequence concatenation.
+However, I implemented the sequence as a \textit{seq} term with the similar structure to \textit{list} in my project instead of the \textit{tseq} function in order to ease sequence concatenation and nested sequence flattening.
 
-\subsection{Yield in Iteration}
-To make sure the \textit{tseq} function would work in a iteration, more explicitly the second term of the returned  \textit{exit} pair should contain the rest iterations of a loop, we need to define the loop recursively with \textit{fixed point}. A \while loop can be defined as below, where $p$ is a predicate function of input $r$.
+\subsection{Yield in Iterations}
+To make sure the \textit{seq} term would work in iterations, more explicitly the second term of the returned  \textit{exit} pair should contain the rest iterations of a loop, we need to define the loop recursively with \textit{fixed point}. A \while loop can be defined as below, where $p$ is a predicate function of input $r$.
 \begin{lstlisting}[basicstyle=\small]
 while (p(r)) {
 	yield r; 
@@ -45,7 +45,16 @@ def while (r) {
 		  while(r)
 }
 \end{lstlisting}
-In this way, there is an \textit{exit} pair returned in each \while iteration. The corresponding proof is provided for the \while term in the operation semantic section.
+In my design, the \while function returns a \textit{seq} term without further reduction. Suppose a \while function is already one term in a body sequence of a function as shown below. Since my \while function returns a \textit{seq} term, we can flatten the nested body sequence into a one-dimensional sequence. In this way, a nested \textit{yield} term can still trigger a complete \textit{exit} pair $(yield$ $r,$ $t')$, where the $t'$ is a sequence of $r := succ(r); while(r); t3; t4$ containing the rest program of the function $f$. More details are provided in the operation semantic section.
+\begin{lstlisting}[basicstyle=\small]
+def f(r) {
+	t1;
+	t2;
+	while(r);
+	t3;
+	t4
+} 		
+\end{lstlisting}
 
 \subsection{Generator Feature}
 I will show how my generator feature works in my language. First, let's give an example about an ordinary function \textit{F}. In line 2, the \textit{x} is the number argument passing into the function and \textit{x'} is the reference for \textit{x}. In line 3 and 4, we increase and decrease the number by 1 in the reference \textit{x'}. Then in line 5, we apply a \while term constructed by a predicate function $P$ and a body function $B$ to \textit{x'}. At last, we return the value of under the reference cell \textit{x'} in line 6.
@@ -64,8 +73,8 @@ B = \x':(Ref Nat). x' := succ !x'
 \end{lstlisting}
 Next, let's see an example for a generator function. The generator \textit{G} is similar to the function \textit{F}. However, the generator returns a reference of a unit function with a sequence body instead of a pure sequence term in two main reasons:
 \begin{enumerate}
-	\item A generator function will be turned to a iterable object by given an input.
-	\item A unit function can prevent the reduction process of the \textit{seq} term in the \textit{ref} term. Because I want the \textit{seq} term only be reduced in the \nt term which is used to iterate each items of a iterable object. 
+	\item A generator function should return a reference of a iterable object by given an input.
+	\item A unit function can prevent the reduction process of the \textit{seq} term in the \textit{ref} term. Because I need the \textit{seq} term only be reduced in the \nt term which is used to iterate each items of a iterable object. 
 \end{enumerate}
 \begin{lstlisting}[basicstyle=\small, numbers=left]
 G = \x: Nat.
@@ -85,11 +94,13 @@ B = \x':(Ref Nat).
 		yield !x'; 
 		x' := succ !x'
 \end{lstlisting}
-I defined a \gen term to construct a iterable generator object in type (Itr T) by taken a generator function and a corresponding input. To iterate each item returned at the \textit{yield} exit point of a \gen term, I implemented a \nt function shown as below. Here, the $x, y$ are the first two items returned from the generator $g$.
+To make this work, I defined a \gen term to construct a iterable generator object in type $Itr$ $T$ by taking a generator function and a corresponding input. 
+I also implemented a \nt function shown as below in order to iterate each item returned at the \textit{exit} point of a \gen term. 
+Here, the $x, y$ are the first two items returned from the generator $g$.
 \begin{lstlisting}[basicstyle=\small, numbers=left]
 let g = gen G x in 
 let x = next(g) in
 let y = next(g) in
 (x, y)
 \end{lstlisting}
-In the following sections, I provide the approaches including syntax, operation semantics, and typing of this generator feature. 
+In the following sections, I provide the design of my implementation including syntax, operation semantics, and typing of this generator feature. 

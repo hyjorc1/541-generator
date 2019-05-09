@@ -1,33 +1,31 @@
 \section{Typing}
 \label{sec:type}
 The type system is used to assign a property called type to various terms in order to remove stuck terms. 
-In my language, the types such as \textit{Arrow}, \textit{Nat}, \textit{Bool}, \textit{List}, \textit{Unit}, and \textit{Prod} are similar to the types in chapter \textit{MoreStlc}.
-They are used to specify the types for lambda calculus, natural number, boolean, list, unit, and pair.
+In my language, the types such as \textit{Arrow}, \textit{Nat}, \textit{Bool}, \textit{Unit}, and \textit{Prod} are similar to the types in chapter \textit{MoreStlc}.
 I also added a new type \textit{Itr} to identify the iterable term such as \gen. 
 The term passing to a \nt term must be a iterable term.
 
 \subsection{Sequence}
-\textbf{T_Let}: If the t2 has type T2 and t1 is not a \textit{yield} term, then the (seq t1 t2) would have type T2. 
+\textbf{T_Seq}: If the $t_2$ has type $T_2$, then the $seq$ $t_1$ $t_2$ would have type $T_2$. 
 \begin{lstlisting}
 Typing:
-
-										  Gamma; ST |- t2 : T2
-											 not (yield_tm t1)
-									---------------------------------   (T_Let)
+										   Gamma; ST |- t2 : T2
+									---------------------------------   (T_Seq)
 									  Gamma; ST |- seq t1 t2 : T2
 \end{lstlisting}
 
 \subsection{Reference}
-\textbf{T_Loc}: 
-\textbf{T_Ref}:
-\textbf{T_Deref}:
-\textbf{T_Assign}:
+\begin{itemize}
+	\item \textbf{T_Loc}: If $L$ is less than the length of type state, then the $loc$ $L$ has type $Ref$ $T$, where $T$ is the located at the $L$th cell of the type state.
+	\item \textbf{T_Ref}: If $t_1$ has type $T_1$, then $ref$ $t_1$ has type $Ref$ $T_1$.
+	\item \textbf{T_Deref}: If $t_1$ has type $Ref$ $T_1$, then $!t_1$ has type $T_1$.
+	\item \textbf{T_Assign}: If $t_1$ has type $Ref$ $T_1$ and $t_2$ has type $T_1$, then $t_2$ has type $Unit$.
+\end{itemize}
 \begin{lstlisting}
 Typing:
-
-										          l < |ST|
+										          L < |ST|
 									---------------------------------   (T_Loc)
-								Gamma; ST |- loc l : Ref (lookup l ST)
+							Gamma; ST |- loc L : Ref (lookup L ST)
 
 									     Gamma; ST |- t1 : T1
 									---------------------------------   (T_Ref)
@@ -38,56 +36,79 @@ Typing:
 									      Gamma; ST |- !t1 : T1
 
 									  	Gamma; ST |- t1 : Ref T1
-										  Gamma; ST |- t2 : T1
+										    Gamma; ST |- t2 : T1
 									---------------------------------   (T_Assign)
 									  Gamma; ST |- t1 := t2 : Unit
 \end{lstlisting}
 
 \subsection{Let}
-\textbf{T_Let}: The \lt term has a type $T2$  if only if that 1) $t1$ has a type $T1$ and 2) $t2$ has a type $T2$ in the $Gamma$ where the $x$ has type $T1$ in.
+\textbf{T_Let}: The \lt $x$ $t_1$ $t_2$ term has a type $T_2$  if only if that 1) $t_1$ has a type $T_1$ and 2) $t_2$ has a type $T_2$ in the $Gamma$ where the $x$ has type $T_1$ in.
 \begin{lstlisting}
 Typing:
 
-											Gamma |- t1 : T1
-										x |->T1; Gamma |- t2 : T2
+										 Gamma; ST |- t1 : T1
+								x |-> T1; Gamma; ST |- t2 : T2
 								 ---------------------------------   (T_Let)
-									 Gamma |- let x=t1 in t2 : T2
+								Gamma; ST |- let x=t1 in t2 : T2
 \end{lstlisting}
 
 \subsection{Fix}
-\textbf{T_Fix}: The \fix term has a type $T1$ if only if that $t1$ has a type $T1 \rightarrow T1$.
+\textbf{T_Fix}: The \fix $t_1$ term has a type $T_1$ if only if that $t_1$ has a type $T_1 \rightarrow T_1$.
 \begin{lstlisting}
 Typing:
 
-									     Gamma |- t1 : T1 -> T1
+									  Gamma; ST |- t1 : T1 -> T1
 									---------------------------------   (T_Fix)
-									 		  Gamma |- fix t1 : T1
+									 	Gamma; ST |- fix t1 : T1
 \end{lstlisting}
 
 \subsection{While}
-The \while term has a type $T$ if only if that the predicate function $t1$ has a type $T \rightarrow Bool$ and the body function $t2$ has a type $T \rightarrow T$.
+\textbf{T_While}: The \while $t_1$ $t_2$ term has a type $Unit$ if only if that the predicate function $t_1$ has a type $T \rightarrow Bool$ and the body function $t_2$ has a type $T \rightarrow Unit$.
 \begin{lstlisting}
 Typing:
 
-									    Gamma |- t1 \in (Ref T1) -> Bool
-									    Gamma |- t2 \in (Ref T1) -> T2
+									Gamma; ST |- t1 : (Ref T) -> Bool
+									Gamma; ST |- t2 : (Ref T) -> Unit
 									------------------------------------ (T_While)
-										  Gamma |- while t1 t2 \in T3
+										Gamma; ST |- while t1 t2 : Unit
 \end{lstlisting}
 
 
 \subsection{Generator}
-The \gen term has a type ($Itr$ $T$) if only if that the predicate function $t1$ has a type $T \rightarrow Bool$ and the body function $t2$ has a type $T \rightarrow T$. And the \nt term has a type ($T*T$) if only if the $t1$ iterable with a type ($Itr$ $T$) and the body function $t2$ has a type $T$.
+\begin{itemize}
+	\item \textbf{T_Gen}: The \gen $t_1$ $t_2$ term has a type $Itr$ $T_1$ if only if that $t_1$ is a generator function with type $Arrow$ $T_1$ ($Ref$ ($Arrow$ $Unit$ $T_2$)) and $t_2$ is an input with type $T_1$.
+	\item \textbf{T_Gyield}: The \textit{yield} $t$ has a type $T$ if only if that $t$ has type $T$.
+	\item \textbf{T_Giterate}: The \textit{giterate} $t_1$ $t_2$ has type $T$ if only if that $t_1$ is a iterable object's reference with type $Itr$ $T$ and $t_2$ has a iterable object.
+	\item \textbf{T_Gnext}: The \nt $t$ has a type $T$ if only if that $t$ is a iterable object's reference with type $Itr$ $T$.
+\end{itemize}
 \begin{lstlisting}
 Typing:
 
-										  Gamma |- t1 \in T -> Bool
-										  Gamma |- t2 \in T -> T
-									---------------------------------   (T_Gen)
-										Gamma |- gen t1 t2 \in (Itr T)
+						Gamma; ST |- t1 : (Arrow T1 (Ref (Arrow Unit T2)))
+										    Gamma; ST |- t2 : T1
+									--------------------------------- (T_Gen)
+										Gamma; ST |- gen t1 t2 : Itr T1
 
-										  Gamma |- t1 \in (Itr T)
-										  Gamma |- t2 \in T
-									---------------------------------   (T_Next)
-										Gamma |- next t1 t2 \in (T * T)
+													Gamma; ST |- t : T
+									--------------------------------- (T_Gyield)
+											Gamma; ST |- gyield t : T
+
+											Gamma; ST |- t1 : (Itr T)
+								 Gamma; ST |- t2 : (Arrow Unit T')
+									--------------------------------- (T_Giterate)
+									Gamma; ST |- giterate t1 t2 : T
+
+											Gamma; ST |- t : (Itr T)
+									--------------------------------- (T_Next)
+											Gamma; ST |- next t : T
+\end{lstlisting}
+
+\subsection{Subsumption}
+\textbf{T_Sub}: The term $t$ has type $T$ if only if $t$ has type $S$ and $S$ is subtype of $T$.
+\begin{lstlisting}
+Typing:
+												Gamma; ST |- t : S
+																S <: T
+									--------------------------------- (T_Sub)
+												Gamma; ST |- t : T
 \end{lstlisting}

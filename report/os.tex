@@ -3,107 +3,105 @@
 The operational semantics of a programming language is used to interpret a valid program into sequences of computational steps. And these sequences are the meaning of the program. In this section, I will describe the operational semantics for the generator feature.
 
 \subsection{Sequence}
-The \textit{seq} term can be constructed by taking two terms, where both could be \textit{seq} terms.
-I also defined \textit{seq_tm} for check the \textit{seq} term and \textit{seqCat} for the concatenation of two terms.
-For the reduction, \textbf{ST_Seq1}: If t1 is a \textit{seq} term, then concatenate t1 with t2. 
-\textbf{ST_Seq2}: If t1 is not a \textit{seq} term and it is reducible, then reduce t1 to t1'. 
-\textbf{ST_Seq3}: If v1 is a value, then apply v1 with a unit function with body t2.
+The \textit{seq} term has similar structure to the list which is constructed by taking two terms.
+In my design, a \textit{yield} term would trigger a \textit{exit} pair in the reduction of \textit{seq} in order to iterate each item in a generator.
+To achieve that, I defined \textit{seq_tm} for checking the \textit{seq} term and \textit{yield_tm} for checking the \textit{yield} term.
+The \textit{seq_app} function is used for concatenating two \textit{seq} terms into one-dimensional \textit{seq} term since the idea of the \textit{exit} pair only works for unnested \textit{seq}.
+\begin{itemize}
+	\item \textbf{ST_Seq1}: If $t_1$ is a \textit{seq} term, then append $t_1$ to $t_2$. 
+	\item \textbf{ST_Seq2}: If $t_1$ is not a \textit{seq} term and it is reducible, then reduce $t_1$ to $t_1$'. 
+	\item \textbf{ST_Seq3}: If $v_1$ is a value and a \textit{yield} term, then return \textit{exit} pair.
+	\item \textbf{ST_Seq4}: If $v_1$ is a value and a non-\textit{yield} term, then evaluate $t_2$.
+\end{itemize}
 \begin{lstlisting}
-Inductive seq_tm : tm -> Prop :=
-| Tseq : forall t1 t2, seq_tm (seq t1 t2).
-
-Fixpoint seqCat (s : tm) (t : tm) : tm :=
-match s with
-| seq t1 t2 => seq t1 (seqCat t2 t)
-| t' => seq t' t
-end.
-
 Reduction:
 									    		seq_tm t1
 								---------------------------------  (ST_Seq1)
-								seq t1 t2 / st --> seqCat t1 t2 / st
-								
-											not (seq_tm t1)
-									  t1 / st --> t1' / st'
-								--------------------------------   (ST_Seq2)
-								seq t1 t2 / st --> seq t1' t2 / st'
+							seq t1 t2 / st --> seq_app t1 t2 / st
 								
 
+												not (seq_tm t1)
+									  	t1 / st --> t1' / st'
+								--------------------------------   (ST_Seq2)
+							seq t1 t2 / st --> seq t1' t2 / st'
+								
+													yield_tm v1
 								--------------------------------   (ST_Seq3)
-							seq v1 t2 / st --> (\_:Unit. t2) v1 / st
+						seq v1 t2 / st --> pair v1 (\_:Unit t2) / st
+								
+												not (yield_tm v1)
+								--------------------------------   (ST_Seq4)
+									seq v1 t2 / st --> t2 / st
 \end{lstlisting}
 
 \subsection{Reference}
-\textbf{ST_RefValue}: If v is a value, then return the length is the state list as its location reference and append v to the list.
-\textbf{ST_DerefLoc}: If t is a value (loc l) and l is less than the length of the state list, then find the value under the reference cell in the list.
-\textbf{ST_Assign}: If l is less than the length of the state list, then replace the value under reference cell (loc l) with v2.
+\begin{itemize}
+	\item \textbf{ST_RefValue}: If $v$ is a value, then return the length is the state list as its location reference and append $v$ to the list.
+	\item \textbf{ST_DerefLoc}: If $t$ is a value ($loc$ $L$) and $L$ is less than the length of the state list, then find the value under the reference cell in the list.
+	\item \textbf{ST_Assign}: If $L$ is less than the length of the state list, then replace the value under reference cell (loc $L$) with $v_2$.
+\end{itemize}
 \begin{lstlisting}
-Definition store := list tm.
-Definition store_lookup (n:nat) (st:store) := nth n st unit.
-
 Reduction:
 
-									----------------------------   (ST_RefValue)
+								---------------------------------  (ST_RefValue)
 								ref v / st --> loc |st| / st,v1
 
-													t / st --> t' / st'
-								----------------------------------  (ST_Ref)
-								     ref t / st --> ref t' / st'
+												t / st --> t' / st'
+								---------------------------------  (ST_Ref)
+								    ref t / st --> ref t' / st'
 								
 												t / st --> t' / st
-								----------------------------------  (ST_Deref)
-												!t / st --> !t' / st'
+								---------------------------------  (ST_Deref)
+											!t / st --> !t' / st'
 								
-													l < |st|
-									----------------------------   (ST_DerefLoc)
-							!(loc l) / st --> lookup l st / st
+														L < |st|
+								---------------------------------  (ST_DerefLoc)
+								!(loc L) / st --> lookup L st / st
 								
 											t1 / st --> t1' / st
-								----------------------------------  (ST_Assign1)
+								---------------------------------  (ST_Assign1)
 								t1 := t2 / st --> t1' := t2  / st
 								
-										t2 / st --> t2' / st
-							---------------------------------   (ST_Assign2)
-							t1 := t2 / st --> t1 := t2'  / st
+											t2 / st --> t2' / st
+								---------------------------------  (ST_Assign2)
+								t1 := t2 / st --> t1 := t2'  / st
 								
-													l < |st|
-								----------------------------------  (ST_Assign)
-								loc l := v2 / st --> unit / [l:=v2]st
+													L < |st|
+								---------------------------------  (ST_Assign)
+							loc L := v2 / st --> unit / [L:=v2]st
 
 \end{lstlisting}
 
 \subsection{Let}
-\textbf{ST_LetValue}: If v1 is a value, then substitute x with v1 in t2.
+\textbf{ST_LetValue}: If $v_1$ is a value, then substitute $x$ with $v_1$ into $t_2$.
 \begin{lstlisting}
 Reduction:
 
 											t1 / st --> t1' / st'
 							----------------------------------  (ST_Let1)
-									let x=t1 in t2 / st 
+							let x=t1 in t2 / st 
 										--> let x=t1' in t2 / st'
 						
-								----------------------------   (ST_LetValue)
-								let x=v1 in t2  / st 
+							----------------------------------  (ST_LetValue)
+							let x=v1 in t2  / st 
 										--> [x:=v1]t2  / st'
 \end{lstlisting}
 
 \subsection{Fix}
-Lambda calculus is a universal model of computation which is well defined in Chapter \textit{Stlc}. Then, we can define a general recursion with this. Let us define the \textit{fixed point} $Y = \lambda f. (\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g))$. Then the recursion function $f$ could be defined as follow:
+Lambda calculus is a universal model of computation which is well defined in Chapter \textit{Stlc}. Then, we can define a general recursion with this. Let us define the \textit{fixed point} $Y = \lambda f. (\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g))$. Then the recursion function $f$ could be defined as:
 \begin{align*}
 Yf &=  \lambda f. ((\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g))) f \\
 &=  (\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g)) \\
 &= f ((\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g))) \\
 &= f (\lambda f. ((\lambda g. f(g\text{ }g))(\lambda g. f(g\text{ }g))) f ) \\
-&= f(Yf)\\
-&= f(f(Yf))\\
-&= ...
+&= f(Yf) = f(f(Yf)) = ...
 \end{align*}
 \begin{lstlisting}
 Reduction:
 
-									      t1  / st--> t1' / st'
-										---------------------------    (ST_Fix1)
-									  fix t1  / st--> fix t1' / st'
+									t1  / st--> t1' / st'
+				-------------------------------------------  (ST_Fix1)
+							fix t1  / st--> fix t1' / st'
 
 				
 				-------------------------------------------  (ST_FixAbs)
@@ -112,7 +110,8 @@ Reduction:
 \end{lstlisting}
 
 \subsection{While}
-Since \while loop can be implemented in recursion as shown below, assume $x$ has a reference type, then we can implement \while function either in induction or lambda calculus. Here, $P$ is a predicate function of $x$, and $B$ is a body function of $x$ in the following function.
+Since \while loop can be implemented in recursion as shown below, then we can implement \while function either in induction or lambda calculus. 
+Here, $P$ is a predicate function of $x$ and $B$ is a body function of $x$ in the following function, where $x$ is reference type.
 \begin{lstlisting}
 def while (P,B,x) {
 		if P(x) do
@@ -121,81 +120,131 @@ def while (P,B,x) {
 \end{lstlisting}
 Then, the \while term can be formalized as:
 \begin{lstlisting}
-while (\x:(Ref T1). p) (\x:(Ref T1). b) =
-fix \f:(Ref T1)->Unit. 
-		\x:(Ref T1). 
-		if (\x:(Ref T1). p x) 
-		do (seq (\x:(Ref T1). b x) (f x)) else unit
+while (\x:(Ref T). p) (\x:(Ref T). b) =
+fix \f:(Ref T)->Unit. 
+		\x:(Ref T). 
+		if (\x:(Ref T). p x) 
+		do (seq_app (\x:(Ref T). b x) (f x)) else unit
 \end{lstlisting}
-In this way, (while P B x) always return a \textit{seq} term or a unit term. So, the \textit{exit} pair would be triggered by the reduction of \textit{seq} even a \textit{yield} term is nested in a \while term that itself is also a term in a sequence.
+In this way, (while P B x) always return a \textit{seq} term or a unit term. 
+So, a complete \textit{exit} pair would be triggered by a \textit{yield} term in the reduction of the \textit{seq} term, even if a sequence is nested with a \while term that is also nested by a \textit{yield} term. In addition, I force the $f$ abstraction has a ($Ref$ $T$) $\rightarrow Unit$ type, since my \while function only takes a reference as a input and returns a $Unit$ type.
 \begin{lstlisting}
 Reduction:
 
-										     t1 / st --> t1' / st'
-								--------------------------------- (ST_While1)
-								while t1 t2 / st --> while t1' t2 / st'
+										t1 / st --> t1' / st'
+						-------------------------------------- (ST_While1)
+						while t1 t2 / st --> while t1' t2 / st'
 								
-											  t2 / st --> t2' / st'
-								--------------------------------- (ST_While2)
-								while v1 t2 / st --> while v1 t2' / st'
+										t2 / st --> t2' / st'
+						-------------------------------------- (ST_While2)
+						while v1 t2 / st --> while v1 t2' / st'
 								
 						-------------------------------------- (ST_WhileFix)
-					while (\x1:(Ref T1). p) (\x2:(Ref T1). b) / st 
-					--> tfix (\f:(Ref T1)->T2. 
-								   (\x:(Ref T1). 
-								   (if \x1:(Ref T1). p x
-										   then seq (\x2:(Ref T1). b x) (f x)
+					while (\x1:(Ref T). p) (\x2:(Ref T). b) / st 
+					--> tfix (\f:(Ref T)->Unit. 
+								   (\x:(Ref T). 
+								   (if \x1:(Ref T). p x
+										   then seq_app (\x2:(Ref T). b x) (f x)
 									     else unit))) / st'
 \end{lstlisting}
 
 
 \subsection{Generator}
-\textbf{ST_Gen3}: The \gen term takes a generator function and a corresponding input and returns a reference of a iterable object.
-\textbf{ST_Gnext2}: The \nt function takes a \gen term and reduces it into a pair, where the first term the generator's reference and the second is the value under it.
-\textbf{ST_Gnext3}: If the second term of pair is a unit function, apply and reduce the body term $t$ with \textbf{ST_Gnext1}.
-\textbf{ST_Gnext4}: If the second term is a \textit{exit} pair, update the generator's reference with the new generator v2 and return v1.
-\textbf{ST_Gnext5}: If the second term is a \textit{yield} term, update the generator's reference with unit and return v.
-\begin{lstlisting}
-Reduction:
+For my generator feature, there are four major terms, \textit{gen, gyield, giterate}, and \textit{gnext}. The \textit{gen} term is used to construct a iterable generator object. The \textit{gyield} term is used for trigger a \textit{exit} pair during the reduction of the \textit{seq} term. The \textit{giterate} term is invoked by the \textit{gnext} in order to update a iterable object's reference and return the next item of the iterable object.
+\begin{itemize}
+	\item 
+	\textbf{ST_Gen3}: If $t_1$ is a generator function and $t_2$ is its corresponding input, then apply the function with the input to return a reference of a iterable object.
+	\begin{lstlisting}
+	Inductive gen_fun : tm -> Prop :=
+	| Tgen_fun : forall x T x' t,
+		gen_fun (abs x T 
+								(tlet x' (ref (var x)) 
+												 (ref (abs "_" Unit t)))).
 
-										  t1 / st --> t1' / st'
-								-------------------------------   (ST_Gen1)
+	Reduction:
+
+										t1 / st --> t1' / st'
+							--------------------------------- (ST_Gen1)
 								gen t1 t2 / st --> gen t1' t2 / st'
 
 										t2 / st --> t2' / st'
-							---------------------------------   (ST_Gen2)
+							--------------------------------- (ST_Gen2)
 							gen v1 t2 / st --> gen v1 t2' / st'
-							  
-							  
-						------------------------------------- (ST_Gen3)
-						 gen (\x:T. g) v / st --> [x:=v]g / st
-													
-									    t / st --> t' / st'
-								------------------------------   (ST_Gyield)
-								gyield t / st --> gyield t' / st'
-													
-										   t / st --> t' / st'
-								---------------------------------  (ST_Gnext1)
-								gnext t / st --> gnext t' / st'
-								
+							
+												gen_fun v1
+							--------------------------------- (ST_Gen3)
+							gen v1 v2 / st --> app v1 v2 / st
+	\end{lstlisting}
+\end{itemize}	
+\begin{itemize}
+	\item 
+	\textbf{ST_Gyield}: A \textit{yield} term is a value if only if $t$ is a value.
+	\begin{lstlisting}
+	Reduction:
 
-							---------------------------------   (ST_Gnext2)
-						gnext (loc l) / st 
-							--> gnext (pair (loc l) (deref (loc l)) / st
-								
-						
-				   -------------------------------------   (ST_Gnext3)
-				gnext (pair (loc l) (abs "_" Unit t)) / st
-						--> gnext (pair (loc l) t) / st
-								
-					  ------------------------------------    (ST_Gnext4)
-					gnext (pair (loc l) (pair (yield v1) v2)) / st
-						--> [_:=assign (loc l) (ref v2)]v1 / st
-								
-								
-							----------------------------------   (ST_Gnext5)
-							gnext (pair (loc l) (yield v)) / st
-							--> [_:=(assign (loc l) unit)]v / st
-												
-\end{lstlisting}
+									  t / st --> t' / st'
+							--------------------------------- (ST_Gyield)
+						 	gyield t / st --> gyield t' / st'
+	\end{lstlisting}
+\end{itemize}
+The first term of the \textit{giterate} term is a iterable object's reference. And the second one is the iterable object in the reference.
+\begin{itemize}
+	\item 
+	\textbf{ST_GiterateExitPair1}: Evaluate the body $t$ of the generator.
+	\item
+	\textbf{ST_GiterateExitPair2}: If the body $t$ can be reduced to a \textit{exit} pair, then assign the rest sequences to the generator's reference and return the yield value.
+	\item
+	\textbf{ST_GiterateExitPair3}: If the body $t$ can be reduced to a \textit{yield} term, then assign unit to the generator's reference and return the yield value.
+	\item
+	\textbf{ST_GiterateExitPair4}: If the body $t$ can be reduced to a value, then assign a $unit$ to the generator's reference and return a $unit$.
+	\begin{lstlisting}
+	Reduction:
+
+								t1 / st --> t1' / st'
+			---------------------------------------  (ST_Giterate1)
+			giterate t1 t2 / st --> giterate t1' t2 / st'
+
+							
+								t2 / st --> t2' / st'
+			---------------------------------------  (ST_Giterate2)
+			giterate v1 t2 / st --> giterate v1 t2' / st'
+
+
+			-------------------------------  (ST_GiterateExitPair1)
+			giterate (loc l) (abs "_" Unit t) / st
+					--> giterate (loc l) t / st
+
+
+			-------------------------------  (ST_GiterateExitPair2)
+			giterate (loc l) (pair (yield v1) v2) / st
+					--> [_:=assign (loc l) (ref v2)]v1 / st
+
+							
+			-------------------------------  (ST_GiterateExitPair3)
+			giterate (loc l) (yield v1) / st
+					--> [_:=assign (loc l) unit]v1 / st
+			
+			-------------------------------  (ST_GiterateExitPair4)
+			giterate (loc l) v1 / st 
+					--> [_:=assign (loc l) unit]unit / st
+	\end{lstlisting}
+\end{itemize}
+
+The \textit{gnext} takes a iterable object's reference and returns the next item of the object.
+\begin{itemize}
+	\item 
+	\textbf{ST_Gnext2}: If the $t$ is a reference term, then reduce to a \textit{giterate} term.
+	\begin{lstlisting}
+	Reduction:
+
+								t / st --> t' / st'
+					-------------------------------- (ST_Gnext1)
+					gnext t / st --> gnext t' / st'
+
+					
+					-------------------------------- (ST_Gnext2)
+					gnext (loc L) / st 
+					--> giterate (loc L) !(loc L) / st'
+	\end{lstlisting}
+\end{itemize}
 
