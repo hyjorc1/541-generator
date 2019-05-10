@@ -5,13 +5,11 @@ For this course project, I extended the lambda calculus language with the genera
 
 \subsection{Motivation}
 Generator functions can generate a function that behaves like an iterator. They allow programmers to make an iterator in a fast, easy and clean way without too much memory cost. To illustrate this, let us consider a simple Python example of building a list and return it\cite{generators}.
-%
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.4\textwidth]{figures/fstn}
 	\caption{Firstn with List}
 \end{figure}
-%
 In figure 1, the function firstn return a full list with length n in memory. If n is really big number and each integer keeps 10 megabyte in memory, then we need to cost a lot of memory to extend our RAM.
 %
 \begin{figure}[H]

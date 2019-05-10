@@ -1,13 +1,13 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  9 MAY 2019 17:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  9 MAY 2019 19:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/hyj/541/project/report/report.tex
-(/Users/hyj/541/project/report/report.tex
+**/Users/yijiahuang/git/541-generator/report/report.tex
+(/Users/yijiahuang/git/541-generator/report/report.tex
 LaTeX2e <2018-04-01> patch level 2
 Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
-(/Users/hyj/541/project/report/llncs.cls
+(./llncs.cls
 Document Class: llncs 2004/08/17 v2.14 
  LaTeX document class for Lecture Notes in Computer Science
 (/usr/local/texlive/2018/texmf-dist/tex/latex/base/article.cls
@@ -26,7 +26,8 @@ File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/tools/multicol.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/tools/multicol.sty
 Package: multicol 2018/04/01 v1.8r multicolumn formatting (FMi)
 \c@tracingmulticols=\count88
 \mult@box=\box26
@@ -125,33 +126,41 @@ LaTeX Font Info:    Redeclaring math symbol \Omega on input line 370.
 \c@solution=\count115
 \c@remark=\count116
 \headlineindent=\dimen124
-) (/Users/hyj/541/project/report/macros.tex (/usr/local/texlive/2018/texmf-dist/tex/latex/relsize/relsize.sty
+)
+(./macros.tex (/usr/local/texlive/2018/texmf-dist/tex/latex/relsize/relsize.sty
 Package: relsize 2013/03/29 ver 4.1
 ) (/usr/local/texlive/2018/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
- (/usr/local/texlive/2018/texmf-dist/tex/latex/base/t1enc.def
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/t1enc.def
 File: t1enc.def 2017/04/05 v2.0i Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
-)) (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/times.sty
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/url/url.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsmath.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2017/09/02 v2.17a AMS math features
 \@mathmargin=\skip45
 
 For additional information on amsmath, use the `?' option.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amstext.sty
 Package: amstext 2000/06/29 v2.01 AMS text
- (/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsgen.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks18
 \ex@=\dimen125
-)) (/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsbsy.sty
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen126
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsopn.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2016/03/08 v2.02 operator names
 )
 \inf@bad=\count117
@@ -197,7 +206,10 @@ LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 ) (/usr/local/texlive/2018/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2008/02/07
- Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix <2008/02/07> (tvz) (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/keyval.sty
+
+Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix 
+<2008/02/07> (tvz)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks23
 )
@@ -207,9 +219,11 @@ Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \c@FancyVerbLine=\count130
 \FV@StepNumber=\count131
 \FV@OutFile=\write3
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/colortbl/colortbl.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2012/02/13 v1.0a Color table columns (DPC)
- (/usr/local/texlive/2018/texmf-dist/tex/latex/tools/array.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/tools/array.sty
 Package: array 2018/04/07 v2.4g Tabular extension package (FMi)
 \col@sep=\dimen134
 \ar@mcellbox=\box57
@@ -218,19 +232,24 @@ Package: array 2018/04/07 v2.4g Tabular extension package (FMi)
 \extratabsurround=\skip48
 \backup@length=\skip49
 \ar@cellbox=\box58
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/color.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
- (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-cfg/color.cfg
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 147.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-def/pdftex.def
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
 \everycr=\toks25
 \minrowclearance=\skip50
-) (/Users/hyj/541/project/report/mathpartir.sty
-Package: mathpartir 2005/12/20 version 1.2.0 Math Paragraph for Typesetting Inference Rules
+)
+(./mathpartir.sty
+Package: mathpartir 2005/12/20 version 1.2.0 Math Paragraph for Typesetting Inf
+erence Rules
 \mpr@tmpdim=\dimen136
 \mpr@andskip=\skip51
 \mpr@lista=\toks26
@@ -239,32 +258,42 @@ Package: mathpartir 2005/12/20 version 1.2.0 Math Paragraph for Typesetting Infe
 \mpr@vlist=\box60
 \mpr@right=\box61
 \rule@dimen=\dimen137
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/amssymb.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
- (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (/usr/local/texlive/2018/texmf-dist/tex/latex/tools/xspace.sty
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/comment/comment.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/comment/comment.sty
 \CommentStream=\write4
- Excluding comment 'comment') (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/graphicx.sty
+
+Excluding comment 'comment')
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
- (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/graphics.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
- (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/trig.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 99.
 )
 \Gin@req@height=\dimen138
 \Gin@req@width=\dimen139
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/listings/listings.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/listings/listings.sty
 \lst@mode=\count132
 \lst@gtempboxa=\box62
 \lst@token=\toks28
@@ -277,20 +306,25 @@ Package graphics Info: Driver file: pdftex.def on input line 99.
 \lst@newlines=\count136
 \lst@lineno=\count137
 \lst@maxwidth=\dimen143
- (/usr/local/texlive/2018/texmf-dist/tex/latex/listings/lstmisc.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 \c@lstnumber=\count138
 \lst@skipnumbers=\count139
 \lst@framebox=\box63
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/listings/listings.cfg
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/listings/listings.cfg
 File: listings.cfg 2015/06/04 1.6 listings configuration
 ))
 Package: listings 2015/06/04 1.6 (Carsten Heinz)
- (/usr/local/texlive/2018/texmf-dist/tex/latex/subfig/subfig.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/subfig/subfig.sty
 Package: subfig 2005/06/28 ver: 1.3 subfig package
- (/usr/local/texlive/2018/texmf-dist/tex/latex/caption/caption.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/caption/caption.sty
 Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
- (/usr/local/texlive/2018/texmf-dist/tex/latex/caption/caption3.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 67.
 \captionmargin=\dimen144
@@ -308,7 +342,10 @@ Package caption Warning: Unsupported document class (or package) detected,
 (caption)                usage of the caption package is not recommended.
 See the caption package documentation for explanation.
 
-Package caption Info: \@makecaption = \long macro:#1#2->\vskip \abovecaptionskip \sbox \@tempboxa {{\bfseries #1.} #2}\ifdim \wd \@tempboxa >\hsize {\bfseries #1.} #2\par \else \global \@minipagefalse \hb@xt@ \hsize {\hfil \box \@tempboxa \hfil }\fi \vskip \belowcaptionskip .
+Package caption Info: \@makecaption = \long macro:#1#2->\vskip \abovecaptionski
+p \sbox \@tempboxa {{\bfseries #1.} #2}\ifdim \wd \@tempboxa >\hsize {\bfseries
+ #1.} #2\par \else \global \@minipagefalse \hb@xt@ \hsize {\hfil \box \@tempbox
+a \hfil }\fi \vskip \belowcaptionskip .
 \c@ContinuedFloat=\count140
 Package caption Info: listings package is loaded.
 )
@@ -332,11 +369,15 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \float@box=\box64
 \@float@everytoks=\toks30
 \@floatcapt=\box65
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/hyperref.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2018/02/06 v6.86b Hypertext links for LaTeX
- (/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
 Package: hobsub-hyperref 2016/05/16 v1.14 Bundle oberdiek, subset hyperref (HO)
- (/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
+
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
 Package: hobsub-generic 2016/05/16 v1.14 Bundle oberdiek, subset generic (HO)
 Package: hobsub 2016/05/16 v1.14 Construct package bundles (HO)
 Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
@@ -354,13 +395,15 @@ Package etexcmds Info: Could not find \expanded.
 (etexcmds)             In the latter case, load this package earlier.
 Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
 Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-Package: pdftexcmds 2018/01/30 v0.27 Utility functions of pdfTeX for LuaTeX (HO)
+Package: pdftexcmds 2018/01/30 v0.27 Utility functions of pdfTeX for LuaTeX (HO
+)
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 Package: pdfescape 2016/05/16 v1.14 Implements pdfTeX's escape features (HO)
-Package: bigintcalc 2016/05/16 v1.4 Expandable calculations on big integers (HO)
+Package: bigintcalc 2016/05/16 v1.4 Expandable calculations on big integers (HO
+)
 Package: bitset 2016/05/16 v1.2 Handle bit-vector datatype (HO)
 Package: uniquecounter 2016/05/16 v1.3 Provide unlimited unique counter (HO)
 )
@@ -373,23 +416,28 @@ Package atveryend Info: \enddocument detected (standard20110627).
 Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
 Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
 Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
-) (/usr/local/texlive/2018/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/auxhook.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/auxhook.sty
 Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 )
 \@linkdim=\dimen152
 \Hy@linkcounter=\count149
 \Hy@pagecounter=\count150
- (/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/pd1enc.def
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2018/02/06 v6.86b Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
 \Hy@SavedSpaceFactor=\count151
- (/usr/local/texlive/2018/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
 Package hyperref Info: Hyper figures OFF on input line 4509.
@@ -419,16 +467,20 @@ LaTeX Info: Redefining \pageref on input line 6443.
 \c@Hfootnote=\count156
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/hpdftex.def
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2018/02/06 v6.86b Hyperref driver for pdfTeX
 \Fld@listcount=\count157
 \c@bookmark@seq@number=\count158
- (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 282.
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+82.
 )
 \Hy@SectionHShift=\skip57
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/sttools/flushend.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/sttools/flushend.sty
 Package: flushend 2017/03/27 v3.3 Balancing columns in twocolumn mode
 \flushend@@lastskip@a=\skip58
 \flushend@@lastskip@b=\skip59
@@ -446,10 +498,12 @@ Package: flushend 2017/03/27 v3.3 Balancing columns in twocolumn mode
 \hold@viper=\box71
 \atColsBreak=\toks31
 \atColsEnd=\toks32
- (/usr/local/texlive/2018/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2018/02/11 v2.5e e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count160
-)) (/usr/local/texlive/2018/texmf-dist/tex/latex/mdwtools/mdwtab.sty
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/mdwtools/mdwtab.sty
 Package: mdwtab 1998/04/28 1.9 Table typesetting with style
 \tab@state=\count161
 \tab@columns=\count162
@@ -467,7 +521,8 @@ Package: mdwtab 1998/04/28 1.9 Table typesetting with style
 \tab@rightskip=\skip62
 \fn@notes=\box72
 \fn@width=\dimen168
-) (/usr/local/texlive/2018/texmf-dist/tex/latex/mdwtools/syntax.sty
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/mdwtools/syntax.sty
 Package: syntax 1996/05/17 1.07 Syntax typesetting (MDW)
 \grammarparsep=\skip63
 \grammarindent=\dimen169
@@ -479,7 +534,8 @@ Package: syntax 1996/05/17 1.07 Syntax typesetting (MDW)
 \sdrulewidth=\dimen170
 \sdcirclediam=\dimen171
 \sdindent=\dimen172
-)) (/Users/hyj/541/project/report/report.aux
+))
+(./report.aux
 
 LaTeX Warning: Label `sec:type' multiply defined.
 
@@ -503,7 +559,8 @@ LaTeX Font Info:    ... okay on input line 14.
 LaTeX Font Info:    Try loading font information for T1+ptm on input line 14.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
-) (/usr/local/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+)
+(/usr/local/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count163
 \scratchdimen=\dimen173
@@ -518,15 +575,20 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 \everyMPtoPDFconversion=\toks36
 ) (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
- (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/grfext.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/grfext.sty
 Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
 )
-Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 438.
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
 Package grfext Info: Graphics extension search list:
-(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps]
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
 ))
 \c@lstlisting=\count169
 Package caption Info: Begin \AtBeginDocument code.
@@ -536,9 +598,11 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box74
 Package hyperref Info: Link coloring OFF on input line 14.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/nameref.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
- (/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count170
@@ -546,22 +610,26 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 14.
 LaTeX Info: Redefining \pageref on input line 14.
 LaTeX Info: Redefining \nameref on input line 14.
- (/Users/hyj/541/project/report/report.out) (/Users/hyj/541/project/report/report.out)
+
+(./report.out) (./report.out)
 \@outlinefile=\write5
 \openout5 = `report.out'.
 
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 21.
 LaTeX Font Info:    Try loading font information for U+msa on input line 21.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 21.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Try loading font information for T1+pcr on input line 21.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/t1pcr.fd
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
 
@@ -576,7 +644,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <9> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 22.
-(/Users/hyj/541/project/report/abstract.tex) (/Users/hyj/541/project/report/intro.tex
+(./abstract.tex) (./intro.tex
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 3.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
@@ -584,68 +652,74 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 <figures/fstn.png, id=13, 235.88126pt x 123.46124pt>
 File: figures/fstn.png Graphic file (type png)
 <use figures/fstn.png>
-Package pdftex.def Info: figures/fstn.png  used on input line 11.
+Package pdftex.def Info: figures/fstn.png  used on input line 10.
 (pdftex.def)             Requested size: 138.84729pt x 72.67381pt.
 <figures/fstn1.png, id=15, 461.725pt x 258.9675pt>
 File: figures/fstn1.png Graphic file (type png)
 <use figures/fstn1.png>
-Package pdftex.def Info: figures/fstn1.png  used on input line 19.
+Package pdftex.def Info: figures/fstn1.png  used on input line 17.
 (pdftex.def)             Requested size: 260.34265pt x 146.01657pt.
  [1
 
-{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map} </Users/hyj/541/project/report/figures/fstn.png>]
+{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./figur
+es/fstn.png>]
 <figures/fstn2.png, id=31, 190.7125pt x 109.40875pt>
 File: figures/fstn2.png Graphic file (type png)
 <use figures/fstn2.png>
-Package pdftex.def Info: figures/fstn2.png  used on input line 28.
+Package pdftex.def Info: figures/fstn2.png  used on input line 26.
 (pdftex.def)             Requested size: 138.84729pt x 79.65735pt.
 <figures/memsize.png, id=32, 581.17125pt x 143.53625pt>
 File: figures/memsize.png Graphic file (type png)
 <use figures/memsize.png>
-Package pdftex.def Info: figures/memsize.png  used on input line 38.
+Package pdftex.def Info: figures/memsize.png  used on input line 36.
 (pdftex.def)             Requested size: 260.34265pt x 64.29941pt.
 
 Underfull \vbox (badness 6428) has occurred while \output is active []
 
- [2 </Users/hyj/541/project/report/figures/fstn1.png> </Users/hyj/541/project/report/figures/fstn2.png>]
+ [2 <./figures/fstn1.png> <./figures/fstn2.png>]
 <figures/foo1.png, id=43, 580.1675pt x 438.63875pt>
 File: figures/foo1.png Graphic file (type png)
 <use figures/foo1.png>
-Package pdftex.def Info: figures/foo1.png  used on input line 50.
+Package pdftex.def Info: figures/foo1.png  used on input line 48.
 (pdftex.def)             Requested size: 260.34265pt x 196.83678pt.
- [3 </Users/hyj/541/project/report/figures/memsize.png> </Users/hyj/541/project/report/figures/foo1.png>]
+ [3 <./figures/memsize.png> <./figures/foo1.png>]
 <figures/foo2.png, id=54, 632.3625pt x 434.62375pt>
 File: figures/foo2.png Graphic file (type png)
 <use figures/foo2.png>
-Package pdftex.def Info: figures/foo2.png  used on input line 58.
+Package pdftex.def Info: figures/foo2.png  used on input line 56.
 (pdftex.def)             Requested size: 142.26378pt x 97.77286pt.
 <figures/foo3.png, id=55, 627.34375pt x 537.00626pt>
 File: figures/foo3.png Graphic file (type png)
 <use figures/foo3.png>
-Package pdftex.def Info: figures/foo3.png  used on input line 60.
+Package pdftex.def Info: figures/foo3.png  used on input line 58.
 (pdftex.def)             Requested size: 142.26378pt x 121.77989pt.
 <figures/foo4.png, id=56, 629.35126pt x 538.01pt>
 File: figures/foo4.png Graphic file (type png)
 <use figures/foo4.png>
-Package pdftex.def Info: figures/foo4.png  used on input line 62.
+Package pdftex.def Info: figures/foo4.png  used on input line 60.
 (pdftex.def)             Requested size: 170.71652pt x 145.9378pt.
-) (/Users/hyj/541/project/report/approach.tex [4 </Users/hyj/541/project/report/figures/foo2.png> </Users/hyj/541/project/report/figures/foo3.png> </Users/hyj/541/project/report/figures/foo4.png>] [5] [6]) (/Users/hyj/541/project/report/syntax.tex [7]) (/Users/hyj/541/project/report/os.tex [8] [9] [10] [11] [12]) (/Users/hyj/541/project/report/subtype.tex [13]
+) (./approach.tex [4 <./figures/foo2.png> <./figures/foo3.png> <./figures/foo4.
+png>] [5] [6]) (./syntax.tex [7]) (./os.tex [8] [9] [10] [11] [12])
+(./subtype.tex [13]
 LaTeX Font Info:    Try loading font information for OMS+ptm on input line 44.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omsptm.fd
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 44.
- [14]) (/Users/hyj/541/project/report/type.tex [15] [16]) (/Users/hyj/541/project/report/conclusion.tex [17]) (/Users/hyj/541/project/report/report.bbl
+ [14])
+(./type.tex [15] [16]) (./conclusion.tex [17]) (./report.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 9--14
-\T1/pcr/m/n/9 com / the-[]magic-[]behind-[]python-[]generator-[]functions-[]bc8eeea54220$[]
+\T1/pcr/m/n/9 com / the-[]magic-[]behind-[]python-[]generator-[]functions-[]bc8
+eeea54220$[]
  []
 
 )
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 41.
  [18]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 41.
- (/Users/hyj/541/project/report/report.aux)
+ (./report.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 41.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 41.
 Package rerunfilecheck Info: File `report.out' has not changed.
@@ -658,14 +732,24 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 41.
  ) 
 Here is how much of TeX's memory you used:
  11422 strings out of 492649
- 164198 string characters out of 6129622
+ 163249 string characters out of 6129622
  430116 words of memory out of 5000000
  14669 multiletter control sequences out of 15000+600000
  38753 words of font info for 57 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 46i,10n,49p,1080b,1859s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Users/hyj/541/project/report/report.pdf (18 pages, 587169 bytes).
+ 46i,10n,49p,1093b,1859s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
+xlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
+ive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive
+/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/
+2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/20
+18/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2018
+/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2018/texmf-d
+ist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/
+type1/urw/times/utmr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/
+times/utmri8a.pfb>
+Output written on report.pdf (18 pages, 587187 bytes).
 PDF statistics:
  686 PDF objects out of 1000 (max. 8388607)
  631 compressed objects within 7 object streams

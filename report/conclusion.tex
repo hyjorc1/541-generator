@@ -1,6 +1,6 @@
 \section{Conclusion}
 \label{sec:conclusion}
-In this project, I extended lambda calculus with the generator feature to improve the memory efficiency of the iteration operation in Coq. The key idea to implement this feature is that, I defined a \textit{yield} term to trigger the \textit{exit} point and re-\textit{entry} point in the reduction of sequences in a function program. In this way, we can pause and resume a function program in order to iterate each generated item with constant space instead of storing all of them into a list. A generator feature demo is provided in both the Coq code file and below by comparing the ordinary function \textit{firstn} and the generator functionn \textit{gfirstn}. 
+In this project, I extended lambda calculus with the generator feature to improve the memory efficiency of the iteration operation in Coq. The key idea to implement this feature is that, I defined a \textit{yield} term to trigger the \textit{exit} point and re-\textit{entry} point in the reduction of sequences in a function program. In this way, we can pause and resume a function program in order to iterate each generated item with constant space instead of storing all of them into a list. A generator feature demo is provided in both the Coq code file and below by comparing the ordinary function \textit{firstn} and the generator function \textit{gfirstn}. 
 \begin{lstlisting}
 firstn = \n:Nat.
          let num = ref 0 in 
@@ -31,5 +31,5 @@ let x = next(g) in
 let x = next(g) in
     (x, y);
 \end{lstlisting}
-However, the generator cannot replace the list-based iteration due to the high cost in generating items. If we need to reuse the generated values multiple times, then the usage of a list is reasonable.
+However, the generator feature cannot completely replace the list-based iteration due to the high cost in generating items. If we need to reuse the generated values multiple times, then the usage of a list is reasonable.
 
